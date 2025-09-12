@@ -64,6 +64,13 @@ export const patients: Patient[] = [
   },
 ];
 
+export const doctorTasks = [
+    { id: 'dt001', patientName: 'John Doe', task: 'Review critical alert for high heart rate', priority: 'high' },
+    { id: 'dt002', patientName: 'Jane Smith', task: 'Follow-up on SpO2 levels', priority: 'medium' },
+    { id: 'dt003', patientName: 'Peter Jones', task: 'Check temperature spike', priority: 'high' },
+    { id: 'dt004', patientName: 'Mary Johnson', task: 'Sign off on routine check-up report', priority: 'low' },
+]
+
 export const patientUser = patients[2]; // Use Peter Jones as the default patient user
 export const doctorUser = { name: 'Dr. Evelyn Reed', avatar: '5' };
 export const nurseUser = { name: 'Chris Garcia', avatar: '6' };
