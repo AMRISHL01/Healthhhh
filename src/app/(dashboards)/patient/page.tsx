@@ -148,7 +148,6 @@ function PatientDashboardClient({ children }: { children: React.ReactNode }) {
 
         <div className="col-span-full space-y-6 lg:col-span-1">
           {children}
-          <VitalsForm />
         </div>
       </div>
     </div>
@@ -163,6 +162,7 @@ export default function PatientDashboard() {
             {/* @ts-ignore */}
             <AiSummaryWrapper />
         </Suspense>
+        <VitalsForm />
     </PatientDashboardClient>
   );
 }
