@@ -38,7 +38,6 @@ async function AiSummaryWrapper() {
 }
 
 function AiSummaryFallback() {
-  // This is a client component, so it can use hooks.
   const { t } = useTranslation();
   return (
     <Card>
@@ -62,9 +61,7 @@ function AiSummaryFallback() {
   );
 }
 
-// We create a separate client component for the main content
-// to handle translations.
-function PatientDashboardClient() {
+function PatientDashboardClient({ children }: { children: React.ReactNode }) {
   const { t } = useTranslation();
   const latestVitals = patientUser.vitals[0];
   const isCritical = patientUser.alertStatus === 'critical';
@@ -150,10 +147,7 @@ function PatientDashboardClient() {
         </div>
 
         <div className="col-span-full space-y-6 lg:col-span-1">
-          <Suspense fallback={<AiSummaryFallback />}>
-            {/* @ts-ignore */}
-            <AiSummaryWrapper />
-          </Suspense>
+          {children}
           <VitalsForm />
         </div>
       </div>
@@ -163,5 +157,12 @@ function PatientDashboardClient() {
 
 
 export default function PatientDashboard() {
-  return <PatientDashboardClient />;
+  return (
+    <PatientDashboardClient>
+        <Suspense fallback={<AiSummaryFallback />}>
+            {/* @ts-ignore */}
+            <AiSummaryWrapper />
+        </Suspense>
+    </PatientDashboardClient>
+  );
 }
