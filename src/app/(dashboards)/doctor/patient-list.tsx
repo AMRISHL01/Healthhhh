@@ -1,0 +1,79 @@
+"use client";
+
+import Image from "next/image";
+import type { Patient } from "@/lib/types";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+
+type PatientListProps = {
+  patients: Patient[];
+  selectedPatient: Patient | null;
+  onSelectPatient: (patient: Patient) => void;
+};
+
+const statusStyles = {
+  normal: "bg-green-100 text-green-800 border-green-200",
+  warning: "bg-yellow-100 text-yellow-800 border-yellow-200",
+  critical: "bg-red-100 text-red-800 border-red-200",
+};
+
+export default function PatientList({
+  patients,
+  selectedPatient,
+  onSelectPatient,
+}: PatientListProps) {
+  return (
+    <Card className="h-full">
+      <CardHeader>
+        <CardTitle>Patient Overview</CardTitle>
+        <CardDescription>Select a patient to view details.</CardDescription>
+      </CardHeader>
+      <CardContent className="h-[calc(100%-8rem)] overflow-y-auto p-0">
+        <div className="flex flex-col">
+          {patients.map((patient) => (
+            <button
+              key={patient.id}
+              onClick={() => onSelectPatient(patient)}
+              className={cn(
+                "flex items-center gap-4 p-4 text-left transition-colors hover:bg-muted/50",
+                selectedPatient?.id === patient.id && "bg-muted"
+              )}
+            >
+              <Avatar className="h-10 w-10">
+                <AvatarImage
+                  src={`https://picsum.photos/seed/${patient.avatar}/100/100`}
+                  alt={patient.name}
+                  data-ai-hint="person portrait"
+                />
+                <AvatarFallback>{patient.name.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <div className="flex-1">
+                <p className="font-semibold">{patient.name}</p>
+                <p className="text-sm text-muted-foreground">
+                  {patient.age}, {patient.gender}
+                </p>
+              </div>
+              <Badge
+                variant="outline"
+                className={cn(
+                  "capitalize",
+                  statusStyles[patient.alertStatus]
+                )}
+              >
+                {patient.alertStatus}
+              </Badge>
+            </button>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
