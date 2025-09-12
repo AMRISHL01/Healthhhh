@@ -18,17 +18,18 @@ import {
 } from "lucide-react";
 import VitalsChart from "../patient/vitals-chart";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import AiRecommendation, { AiRecommendationLoader } from "./ai-recommendation";
-import { Suspense } from "react";
+import AiRecommendation from "./ai-recommendation";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/hooks/use-translation";
 
 type PatientDetailsProps = {
   patient: Patient | null;
+  recommendation: string | null;
+  loadingRecommendation: boolean;
 };
 
 
-export default function PatientDetails({ patient }: PatientDetailsProps) {
+export default function PatientDetails({ patient, recommendation, loadingRecommendation }: PatientDetailsProps) {
   const { t } = useTranslation();
 
   if (!patient) {
@@ -108,9 +109,7 @@ export default function PatientDetails({ patient }: PatientDetailsProps) {
           </Card>
         </div>
         <div className="lg:col-span-1">
-          <Suspense fallback={<AiRecommendationLoader />}>
-            <AiRecommendation patient={patient} />
-          </Suspense>
+          <AiRecommendation recommendation={recommendation} loading={loadingRecommendation} />
         </div>
       </div>
     </div>
