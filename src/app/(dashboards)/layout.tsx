@@ -13,6 +13,7 @@ import {
   Users,
   BarChart,
   FileText,
+  MessageSquare,
 } from "lucide-react";
 
 import {
@@ -58,6 +59,7 @@ export default function DashboardLayout({
     : [
         { href: "/patient", icon: Home, label: "Dashboard" },
         { href: "/patient/reports", icon: FileText, label: "Health Reports" },
+        { href: "/patient/chat", icon: MessageSquare, label: "Chat with Doctor" },
         { href: "#", icon: User, label: "Profile" },
         { href: "#", icon: Settings, label: "Settings" },
       ];
