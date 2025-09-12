@@ -66,6 +66,7 @@ export const patients: Patient[] = [
 export const patientUser = patients[2]; // Use Peter Jones as the default patient user
 export const doctorUser = { name: 'Dr. Evelyn Reed', avatar: '5' };
 export const nurseUser = { name: 'Chris Garcia', avatar: '6' };
+export const adminUser = { name: 'Alex Green', avatar: '7' };
 
 export const nurseTasks: NurseTask[] = [
   {
@@ -93,4 +94,17 @@ export const nurseTasks: NurseTask[] = [
     status: 'completed',
     notes: 'Patient is feeling well. Vitals are stable.'
   },
+];
+
+export const allUsers = [
+  ...patients.map(p => ({ id: p.id, name: p.name, role: 'Patient', status: p.alertStatus, lastLogin: '2024-07-20' })),
+  { id: 'd001', name: 'Dr. Evelyn Reed', role: 'Doctor', status: 'active', lastLogin: '2024-07-21' },
+  { id: 'n001', name: 'Chris Garcia', role: 'Nurse', status: 'active', lastLogin: '2024-07-21' },
+];
+
+export const systemLogs = [
+  { id: 'l001', timestamp: '2024-07-21T10:05:00Z', user: 'Dr. Evelyn Reed', action: 'Logged in to the system.' },
+  { id: 'l002', timestamp: '2024-07-21T10:02:00Z', user: 'AI System', action: 'Critical alert for John Doe (Heart Rate: 122 bpm). Notified Dr. Reed.' },
+  { id: 'l003', timestamp: '2024-07-21T09:30:00Z', user: 'Nurse Chris Garcia', action: 'Completed task for Mary Johnson.' },
+  { id: 'l004', timestamp: '2024-07-20T18:00:00Z', user: 'Patient Peter Jones', action: 'Manually logged vitals.' },
 ];

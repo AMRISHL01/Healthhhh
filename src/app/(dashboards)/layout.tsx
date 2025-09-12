@@ -15,6 +15,8 @@ import {
   FileText,
   MessageSquare,
   ClipboardList,
+  Server,
+  FileCog,
 } from "lucide-react";
 
 import {
@@ -40,7 +42,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
-import { doctorUser, patientUser, nurseUser } from "@/lib/data";
+import { doctorUser, patientUser, nurseUser, adminUser } from "@/lib/data";
 
 export default function DashboardLayout({
   children,
@@ -51,11 +53,13 @@ export default function DashboardLayout({
   const isDoctor = pathname.startsWith("/doctor");
   const isPatient = pathname.startsWith("/patient");
   const isNurse = pathname.startsWith("/nurse");
+  const isAdmin = pathname.startsWith("/admin");
 
   const getUser = () => {
     if (isDoctor) return { user: doctorUser, role: "Doctor" };
     if (isPatient) return { user: patientUser, role: "Patient" };
     if (isNurse) return { user: nurseUser, role: "Nurse" };
+    if (isAdmin) return { user: adminUser, role: "Admin" };
     return { user: patientUser, role: "Patient" }; // Default
   };
 
@@ -86,6 +90,14 @@ export default function DashboardLayout({
         { href: "#", icon: Settings, label: "Settings" },
       ];
     }
+     if (isAdmin) {
+      return [
+        { href: "/admin", icon: Home, label: "Dashboard" },
+        { href: "/admin/roles", icon: Users, label: "Role Management" },
+        { href: "/admin/logs", icon: FileCog, label: "System Logs" },
+        { href: "#", icon: Settings, label: "Settings" },
+      ];
+    }
     return [];
   };
 
@@ -95,6 +107,7 @@ export default function DashboardLayout({
     if (isDoctor) return "Doctor Dashboard";
     if (isPatient) return "Patient Dashboard";
     if (isNurse) return "Nurse Dashboard";
+    if (isAdmin) return "Admin Dashboard";
     return "Dashboard";
   }
 
