@@ -1,8 +1,10 @@
+
 "use client";
 
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import {
   Card,
   CardContent,
@@ -21,6 +23,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { db } from "@/lib/firebase";
+import { patientUser } from "@/lib/data";
 
 const formSchema = z.object({
   heartRate: z.coerce.number().min(30, "Invalid heart rate").max(220, "Invalid heart rate"),
@@ -41,14 +45,27 @@ export default function VitalsForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    toast({
-      title: "Vitals Submitted!",
-      description: "Your latest health data has been saved.",
-      variant: 'default',
-    });
-    form.reset();
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      await addDoc(collection(db, "vitals"), {
+        patientId: patientUser.id,
+        ...values,
+        timestamp: serverTimestamp(),
+      });
+      toast({
+        title: "Vitals Submitted!",
+        description: "Your latest health data has been saved to Firestore.",
+        variant: 'default',
+      });
+      form.reset();
+    } catch (error) {
+       console.error("Error adding document: ", error);
+       toast({
+        title: "Submission Failed",
+        description: "There was an error saving your vitals. Please try again.",
+        variant: "destructive",
+      });
+    }
   }
 
   return (
