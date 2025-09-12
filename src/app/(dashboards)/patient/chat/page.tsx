@@ -1,12 +1,15 @@
 
+'use client';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { doctorUser, patientUser } from "@/lib/data";
 import { SendHorizonal } from "lucide-react";
+import { useTranslation } from "@/hooks/use-translation";
 
 export default function ChatPage() {
+  const { t } = useTranslation();
   const messages = [
     { from: 'doctor', text: 'Hello! How are you feeling today?', time: '10:00 AM' },
     { from: 'patient', text: 'I am feeling a bit better, thanks for asking.', time: '10:01 AM' },
@@ -45,7 +48,7 @@ export default function ChatPage() {
                     : 'bg-muted'
                 }`}
               >
-                <p className="text-sm">{message.text}</p>
+                <p className="text-sm">{t(message.text)}</p>
                 <p className="text-xs text-right mt-1 opacity-70">{message.time}</p>
               </div>
                {message.from === 'patient' && (
@@ -59,10 +62,10 @@ export default function ChatPage() {
         </CardContent>
         <CardFooter className="p-4 border-t">
           <div className="flex w-full items-center gap-2">
-            <Input placeholder="Type your message..." />
+            <Input placeholder={t('Type your message...')} />
             <Button size="icon">
               <SendHorizonal className="h-5 w-5" />
-              <span className="sr-only">Send</span>
+              <span className="sr-only">{t('Send')}</span>
             </Button>
           </div>
         </CardFooter>

@@ -6,6 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/hooks/use-translation";
 
 type Task = {
   id: string;
@@ -25,37 +26,38 @@ const priorityStyles = {
 };
 
 export default function DoctorTasks({ tasks }: DoctorTasksProps) {
+    const { t } = useTranslation();
   return (
     <Card>
       <CardHeader>
-        <CardTitle>My Tasks</CardTitle>
+        <CardTitle>{t('My Tasks')}</CardTitle>
         <CardDescription>
-          A list of tasks needing your attention.
+          {t('A list of tasks needing your attention.')}
         </CardDescription>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Patient</TableHead>
-              <TableHead>Task</TableHead>
-              <TableHead>Priority</TableHead>
-              <TableHead className="text-right">Action</TableHead>
+              <TableHead>{t('Patient')}</TableHead>
+              <TableHead>{t('Task')}</TableHead>
+              <TableHead>{t('Priority')}</TableHead>
+              <TableHead className="text-right">{t('Action')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {tasks.map((task) => (
               <TableRow key={task.id}>
                 <TableCell className="font-medium">{task.patientName}</TableCell>
-                <TableCell>{task.task}</TableCell>
+                <TableCell>{t(task.task)}</TableCell>
                 <TableCell>
                    <Badge variant="outline" className={cn("capitalize", priorityStyles[task.priority])}>
-                      {task.priority}
+                      {t(task.priority)}
                     </Badge>
                 </TableCell>
                 <TableCell className="text-right">
                   <Button variant="outline" size="sm">
-                    View Patient
+                    {t('View Patient')}
                   </Button>
                 </TableCell>
               </TableRow>

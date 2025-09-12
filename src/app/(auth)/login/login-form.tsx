@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from '@/hooks/use-translation';
 
 const formSchema = z.object({
   email: z.string().email({
@@ -31,6 +32,7 @@ const formSchema = z.object({
 export function LoginForm() {
   const router = useRouter();
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -42,8 +44,8 @@ export function LoginForm() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     toast({
-      title: 'Login Successful',
-      description: 'Redirecting to your dashboard...',
+      title: t('Login Successful'),
+      description: t('Redirecting to your dashboard...'),
     });
 
     const email = values.email.toLowerCase();
@@ -69,7 +71,7 @@ export function LoginForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>{t('Email')}</FormLabel>
               <FormControl>
                 <Input
                   type="email"
@@ -87,12 +89,12 @@ export function LoginForm() {
           render={({ field }) => (
             <FormItem>
               <div className="flex items-center">
-                <FormLabel>Password</FormLabel>
+                <FormLabel>{t('Password')}</FormLabel>
                 <Link
                   href="/forgot-password"
                   className="ml-auto inline-block text-sm underline"
                 >
-                  Forgot your password?
+                  {t('Forgot your password?')}
                 </Link>
               </div>
               <FormControl>
@@ -103,7 +105,7 @@ export function LoginForm() {
           )}
         />
         <Button type="submit" className="w-full">
-          Login
+          {t('Login')}
         </Button>
       </form>
     </Form>

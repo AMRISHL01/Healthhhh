@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { db } from "@/lib/firebase";
 import { patientUser } from "@/lib/data";
+import { useTranslation } from "@/hooks/use-translation";
 
 const formSchema = z.object({
   heartRate: z.coerce.number().min(30, "Invalid heart rate").max(220, "Invalid heart rate"),
@@ -35,6 +36,7 @@ const formSchema = z.object({
 
 export default function VitalsForm() {
   const { toast } = useToast();
+  const { t } = useTranslation();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -53,16 +55,16 @@ export default function VitalsForm() {
         timestamp: serverTimestamp(),
       });
       toast({
-        title: "Vitals Submitted!",
-        description: "Your latest health data has been saved to Firestore.",
+        title: t("Vitals Submitted!"),
+        description: t("Your latest health data has been saved to Firestore."),
         variant: 'default',
       });
       form.reset();
     } catch (error) {
        console.error("Error adding document: ", error);
        toast({
-        title: "Submission Failed",
-        description: "There was an error saving your vitals. Please try again.",
+        title: t("Submission Failed"),
+        description: t("There was an error saving your vitals. Please try again."),
         variant: "destructive",
       });
     }
@@ -71,9 +73,9 @@ export default function VitalsForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Log New Vitals</CardTitle>
+        <CardTitle>{t('Log New Vitals')}</CardTitle>
         <CardDescription>
-          Enter your latest measurements below.
+          {t('Enter your latest measurements below.')}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -84,7 +86,7 @@ export default function VitalsForm() {
               name="heartRate"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Heart Rate (bpm)</FormLabel>
+                  <FormLabel>{t('Heart Rate (bpm)')}</FormLabel>
                   <FormControl>
                     <Input type="number" placeholder="e.g., 72" {...field} />
                   </FormControl>
@@ -110,7 +112,7 @@ export default function VitalsForm() {
               name="bloodPressure"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Blood Pressure (e.g. 120/80)</FormLabel>
+                  <FormLabel>{t('Blood Pressure (e.g. 120/80)')}</FormLabel>
                   <FormControl>
                     <Input placeholder="e.g., 120/80" {...field} />
                   </FormControl>
@@ -123,7 +125,7 @@ export default function VitalsForm() {
               name="temperature"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Temperature (°C)</FormLabel>
+                  <FormLabel>{t('Temperature (°C)')}</FormLabel>
                   <FormControl>
                     <Input type="number" step="0.1" placeholder="e.g., 36.8" {...field} />
                   </FormControl>
@@ -132,7 +134,7 @@ export default function VitalsForm() {
               )}
             />
             <Button type="submit" className="w-full">
-              Submit Vitals
+              {t('Submit Vitals')}
             </Button>
           </form>
         </Form>

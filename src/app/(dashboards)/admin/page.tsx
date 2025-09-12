@@ -1,3 +1,5 @@
+
+'use client';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
@@ -5,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { allUsers } from "@/lib/data";
 import { Users, UserPlus, Activity, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/hooks/use-translation";
 
 const statusStyles: { [key: string]: string } = {
   normal: "bg-green-100 text-green-800 border-green-200",
@@ -14,80 +17,81 @@ const statusStyles: { [key: string]: string } = {
 };
 
 export default function AdminDashboard() {
+    const { t } = useTranslation();
   return (
     <div className="space-y-6">
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('Total Users')}</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{allUsers.length}</div>
-            <p className="text-xs text-muted-foreground">3 doctors, 2 nurses, 4 patients</p>
+            <p className="text-xs text-muted-foreground">{t('3 doctors, 2 nurses, 4 patients')}</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Alerts</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('Active Alerts')}</CardTitle>
             <AlertTriangle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">3</div>
-            <p className="text-xs text-muted-foreground">Across all patients</p>
+            <p className="text-xs text-muted-foreground">{t('Across all patients')}</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Logins Today</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('Logins Today')}</CardTitle>
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">32</div>
-            <p className="text-xs text-muted-foreground">+15% from yesterday</p>
+            <p className="text-xs text-muted-foreground">{t('+15% from yesterday')}</p>
           </CardContent>
         </Card>
          <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Add New User</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('Add New User')}</CardTitle>
             <UserPlus className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-             <Button className="w-full mt-4">Create User</Button>
+             <Button className="w-full mt-4">{t('Create User')}</Button>
           </CardContent>
         </Card>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>User Management</CardTitle>
-          <CardDescription>View and manage all users in the system.</CardDescription>
+          <CardTitle>{t('User Management')}</CardTitle>
+          <CardDescription>{t('View and manage all users in the system.')}</CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Last Login</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableHead>{t('Name')}</TableHead>
+                <TableHead>{t('Role')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
+                <TableHead>{t('Last Login')}</TableHead>
+                <TableHead className="text-right">{t('Actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {allUsers.map((user) => (
                 <TableRow key={user.id}>
                   <TableCell className="font-medium">{user.name}</TableCell>
-                  <TableCell>{user.role}</TableCell>
+                  <TableCell>{t(user.role)}</TableCell>
                   <TableCell>
                     <Badge variant="outline" className={cn("capitalize", statusStyles[user.status])}>
-                      {user.status}
+                      {t(user.status)}
                     </Badge>
                   </TableCell>
                   <TableCell>{user.lastLogin}</TableCell>
                   <TableCell className="text-right space-x-2">
-                    <Button variant="outline" size="sm">Edit</Button>
-                    <Button variant="destructive" size="sm">Delete</Button>
+                    <Button variant="outline" size="sm">{t('Edit')}</Button>
+                    <Button variant="destructive" size="sm">{t('Delete')}</Button>
                   </TableCell>
                 </TableRow>
               ))}

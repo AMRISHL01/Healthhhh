@@ -10,11 +10,11 @@ export const patients: Patient[] = [
     gender: 'Male',
     alertStatus: 'critical',
     vitals: [
-      { date: '2024-07-20T08:00:00Z', heartRate: 122, spo2: 88, temperature: 38.5 },
-      { date: '2024-07-19T08:00:00Z', heartRate: 95, spo2: 96, temperature: 37.2 },
-      { date: '2024-07-18T08:00:00Z', heartRate: 88, spo2: 97, temperature: 37.1 },
-      { date: '2024-07-17T08:00:00Z', heartRate: 92, spo2: 98, temperature: 36.8 },
-      { date: '2024-07-16T08:00:00Z', heartRate: 85, spo2: 99, temperature: 36.9 },
+      { date: '2024-07-20T08:00:00Z', heartRate: 122, spo2: 88, temperature: 38.5, bloodPressure: '140/90' },
+      { date: '2024-07-19T08:00:00Z', heartRate: 95, spo2: 96, temperature: 37.2, bloodPressure: '130/85' },
+      { date: '2024-07-18T08:00:00Z', heartRate: 88, spo2: 97, temperature: 37.1, bloodPressure: '125/82' },
+      { date: '2024-07-17T08:00:00Z', heartRate: 92, spo2: 98, temperature: 36.8, bloodPressure: '128/84' },
+      { date: '2024-07-16T08:00:00Z', heartRate: 85, spo2: 99, temperature: 36.9, bloodPressure: '122/80' },
     ],
   },
   {
@@ -25,11 +25,11 @@ export const patients: Patient[] = [
     gender: 'Female',
     alertStatus: 'warning',
     vitals: [
-      { date: '2024-07-20T08:00:00Z', heartRate: 105, spo2: 93, temperature: 37.8 },
-      { date: '2024-07-19T08:00:00Z', heartRate: 102, spo2: 94, temperature: 37.5 },
-      { date: '2024-07-18T08:00:00Z', heartRate: 98, spo2: 95, temperature: 37.3 },
-      { date: '2024-07-17T08:00:00Z', heartRate: 89, spo2: 97, temperature: 37.0 },
-      { date: '2024-07-16T08:00:00Z', heartRate: 86, spo2: 98, temperature: 36.9 },
+      { date: '2024-07-20T08:00:00Z', heartRate: 105, spo2: 93, temperature: 37.8, bloodPressure: '135/88' },
+      { date: '2024-07-19T08:00:00Z', heartRate: 102, spo2: 94, temperature: 37.5, bloodPressure: '132/86' },
+      { date: '2024-07-18T08:00:00Z', heartRate: 98, spo2: 95, temperature: 37.3, bloodPressure: '130/85' },
+      { date: '2024-07-17T08:00:00Z', heartRate: 89, spo2: 97, temperature: 37.0, bloodPressure: '128/84' },
+      { date: '2024-07-16T08:00:00Z', heartRate: 86, spo2: 98, temperature: 36.9, bloodPressure: '125/82' },
     ],
   },
   {
@@ -40,11 +40,11 @@ export const patients: Patient[] = [
     gender: 'Male',
     alertStatus: 'critical', // Changed to critical for demo
     vitals: [
-      { date: '2024-07-20T08:00:00Z', heartRate: 130, spo2: 90, temperature: 39.1 },
-      { date: '2024-07-19T08:00:00Z', heartRate: 75, spo2: 98, temperature: 36.9 },
-      { date: '2024-07-18T08:00:00Z', heartRate: 70, spo2: 99, temperature: 37.0 },
-      { date: '2024-07-17T08:00:00Z', heartRate: 68, spo2: 99, temperature: 36.7 },
-      { date: '2024-07-16T08:00:00Z', heartRate: 71, spo2: 98, temperature: 36.8 },
+      { date: '2024-07-20T08:00:00Z', heartRate: 130, spo2: 90, temperature: 39.1, bloodPressure: '145/95' },
+      { date: '2024-07-19T08:00:00Z', heartRate: 75, spo2: 98, temperature: 36.9, bloodPressure: '120/80' },
+      { date: '2024-07-18T08:00:00Z', heartRate: 70, spo2: 99, temperature: 37.0, bloodPressure: '118/78' },
+      { date: '2024-07-17T08:00:00Z', heartRate: 68, spo2: 99, temperature: 36.7, bloodPressure: '116/76' },
+      { date: '2024-07-16T08:00:00Z', heartRate: 71, spo2: 98, temperature: 36.8, bloodPressure: '119/79' },
     ],
   },
   {
@@ -55,20 +55,20 @@ export const patients: Patient[] = [
     gender: 'Female',
     alertStatus: 'normal',
     vitals: [
-      { date: '2024-07-20T08:00:00Z', heartRate: 80, spo2: 97, temperature: 37.0 },
-      { date: '2024-07-19T08:00:00Z', heartRate: 82, spo2: 97, temperature: 37.1 },
-      { date: '2024-07-18T08:00:00Z', heartRate: 79, spo2: 98, temperature: 36.9 },
-      { date: '2024-07-17T08:00:00Z', heartRate: 81, spo2: 97, temperature: 37.0 },
-      { date: '2024-07-16T08:00:00Z', heartRate: 83, spo2: 98, temperature: 36.8 },
+      { date: '2024-07-20T08:00:00Z', heartRate: 80, spo2: 97, temperature: 37.0, bloodPressure: '120/80' },
+      { date: '2024-07-19T08:00:00Z', heartRate: 82, spo2: 97, temperature: 37.1, bloodPressure: '121/81' },
+      { date: '2024-07-18T08:00:00Z', heartRate: 79, spo2: 98, temperature: 36.9, bloodPressure: '119/79' },
+      { date: '2024-07-17T08:00:00Z', heartRate: 81, spo2: 97, temperature: 37.0, bloodPressure: '120/80' },
+      { date: '2024-07-16T08:00:00Z', heartRate: 83, spo2: 98, temperature: 36.8, bloodPressure: '122/82' },
     ],
   },
 ];
 
 export const doctorTasks = [
-    { id: 'dt001', patientName: 'John Doe', task: 'Review critical alert for high heart rate', priority: 'high' },
-    { id: 'dt002', patientName: 'Jane Smith', task: 'Follow-up on SpO2 levels', priority: 'medium' },
-    { id: 'dt003', patientName: 'Peter Jones', task: 'Check temperature spike', priority: 'high' },
-    { id: 'dt004', patientName: 'Mary Johnson', task: 'Sign off on routine check-up report', priority: 'low' },
+    { id: 'dt001', patientName: 'John Doe', task: 'Review critical alert for high heart rate', priority: 'high' as const },
+    { id: 'dt002', patientName: 'Jane Smith', task: 'Follow-up on SpO2 levels', priority: 'medium' as const },
+    { id: 'dt003', patientName: 'Peter Jones', task: 'Check temperature spike', priority: 'high' as const },
+    { id: 'dt004', patientName: 'Mary Johnson', task: 'Sign off on routine check-up report', priority: 'low' as const },
 ]
 
 export const patientUser = patients[2]; // Use Peter Jones as the default patient user
@@ -89,7 +89,7 @@ export const nurseTasks: NurseTask[] = [
     id: 't002',
     patientId: 'p002',
     patientName: 'Jane Smith',
-    task: 'Follow-up on yesterday\'s high heart rate alert.',
+    task: "Follow-up on yesterday's high heart rate alert.",
     time: '2024-07-21T11:00:00Z',
     status: 'pending',
   },
@@ -105,9 +105,9 @@ export const nurseTasks: NurseTask[] = [
 ];
 
 export const allUsers = [
-  ...patients.map(p => ({ id: p.id, name: p.name, role: 'Patient', status: p.alertStatus, lastLogin: '2024-07-20' })),
-  { id: 'd001', name: 'Dr. Evelyn Reed', role: 'Doctor', status: 'active', lastLogin: '2024-07-21' },
-  { id: 'n001', name: 'Chris Garcia', role: 'Nurse', status: 'active', lastLogin: '2024-07-21' },
+  ...patients.map(p => ({ id: p.id, name: p.name, role: 'Patient' as const, status: p.alertStatus, lastLogin: '2024-07-20' })),
+  { id: 'd001', name: 'Dr. Evelyn Reed', role: 'Doctor' as const, status: 'active' as const, lastLogin: '2024-07-21' },
+  { id: 'n001', name: 'Chris Garcia', role: 'Nurse' as const, status: 'active' as const, lastLogin: '2024-07-21' },
 ];
 
 export const systemLogs = [

@@ -32,6 +32,7 @@ import {
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import Logo from '@/components/logo';
+import { useTranslation } from '@/hooks/use-translation';
 
 
 const formSchema = z
@@ -53,6 +54,7 @@ const formSchema = z
 export default function SignupPage() {
   const router = useRouter();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -68,8 +70,8 @@ export default function SignupPage() {
   function onSubmit(values: z.infer<typeof formSchema>) {
      console.log(values);
      toast({
-        title: 'Signup Successful (Simulated)!',
-        description: 'You have successfully created an account. Redirecting to login...',
+        title: t('Signup Successful (Simulated)!'),
+        description: t('You have successfully created an account. Redirecting to login...'),
       });
       
       setTimeout(() => {
@@ -87,9 +89,9 @@ export default function SignupPage() {
       </div>
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-2xl">Create an account</CardTitle>
+          <CardTitle className="text-2xl">{t('Create an account')}</CardTitle>
           <CardDescription>
-            Enter your information to get started.
+            {t('Enter your information to get started.')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -101,7 +103,7 @@ export default function SignupPage() {
                   name="firstName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>First Name</FormLabel>
+                      <FormLabel>{t('First Name')}</FormLabel>
                       <FormControl>
                         <Input placeholder="John" {...field} />
                       </FormControl>
@@ -114,7 +116,7 @@ export default function SignupPage() {
                   name="lastName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Last Name</FormLabel>
+                      <FormLabel>{t('Last Name')}</FormLabel>
                       <FormControl>
                         <Input placeholder="Doe" {...field} />
                       </FormControl>
@@ -128,7 +130,7 @@ export default function SignupPage() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t('Email')}</FormLabel>
                     <FormControl>
                       <Input
                         type="email"
@@ -145,21 +147,21 @@ export default function SignupPage() {
                 name="role"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>I am a...</FormLabel>
+                    <FormLabel>{t('I am a...')}</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select your role" />
+                          <SelectValue placeholder={t('Select your role')} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="patient">Patient</SelectItem>
-                        <SelectItem value="doctor">Doctor</SelectItem>
-                        <SelectItem value="nurse">Nurse</SelectItem>
-                        <SelectItem value="admin">Administrator</SelectItem>
+                        <SelectItem value="patient">{t('Patient')}</SelectItem>
+                        <SelectItem value="doctor">{t('Doctor')}</SelectItem>
+                        <SelectItem value="nurse">{t('Nurse')}</SelectItem>
+                        <SelectItem value="admin">{t('Administrator')}</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -171,7 +173,7 @@ export default function SignupPage() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>{t('Password')}</FormLabel>
                     <FormControl>
                       <Input type="password" placeholder="••••••••" {...field} />
                     </FormControl>
@@ -184,7 +186,7 @@ export default function SignupPage() {
                 name="confirmPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
+                    <FormLabel>{t('Confirm Password')}</FormLabel>
                     <FormControl>
                       <Input type="password" placeholder="••••••••" {...field} />
                     </FormControl>
@@ -193,14 +195,14 @@ export default function SignupPage() {
                 )}
               />
               <Button type="submit" className="w-full">
-                Create Account
+                {t('Create Account')}
               </Button>
             </form>
           </Form>
           <div className="mt-4 text-center text-sm">
-            Already have an account?{' '}
+            {t('Already have an account?')}{' '}
             <Link href="/login" className="underline">
-              Log in
+              {t('Log in')}
             </Link>
           </div>
         </CardContent>

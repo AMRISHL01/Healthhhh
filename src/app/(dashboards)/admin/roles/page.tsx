@@ -34,6 +34,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { PlusCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
+import { useTranslation } from '@/hooks/use-translation';
 
 const permissions = [
   { id: 'view_patient_data', label: 'View Patient Data' },
@@ -54,6 +55,7 @@ const formSchema = z.object({
 
 export default function RoleManagementPage() {
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -67,8 +69,8 @@ export default function RoleManagementPage() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log('New role created:', values);
     toast({
-      title: 'Role Created (Simulated)',
-      description: `The role "${values.roleName}" has been successfully created.`,
+      title: t('Role Created (Simulated)'),
+      description: t('The role "{{roleName}}" has been successfully created.', {roleName: values.roleName}),
     });
     form.reset();
     setIsOpen(false);
@@ -78,21 +80,21 @@ export default function RoleManagementPage() {
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
-          <CardTitle>Role Management</CardTitle>
-          <CardDescription>Manage user roles and permissions.</CardDescription>
+          <CardTitle>{t('Role Management')}</CardTitle>
+          <CardDescription>{t('Manage user roles and permissions.')}</CardDescription>
         </div>
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
             <Button>
               <PlusCircle className="mr-2 h-4 w-4" />
-              Add New Role
+              {t('Add New Role')}
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle>Add New Role</DialogTitle>
+              <DialogTitle>{t('Add New Role')}</DialogTitle>
               <DialogDescription>
-                Define a new role and set its permissions.
+                {t('Define a new role and set its permissions.')}
               </DialogDescription>
             </DialogHeader>
             <Form {...form}>
@@ -102,9 +104,9 @@ export default function RoleManagementPage() {
                   name="roleName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Role Name</FormLabel>
+                      <FormLabel>{t('Role Name')}</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g., Senior Nurse" {...field} />
+                        <Input placeholder={t('e.g., Senior Nurse')} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -116,7 +118,7 @@ export default function RoleManagementPage() {
                   render={() => (
                     <FormItem>
                       <div className="mb-4">
-                        <FormLabel className="text-base">Permissions</FormLabel>
+                        <FormLabel className="text-base">{t('Permissions')}</FormLabel>
                       </div>
                       {permissions.map((item) => (
                         <FormField
@@ -147,7 +149,7 @@ export default function RoleManagementPage() {
                                   />
                                 </FormControl>
                                 <FormLabel className="font-normal">
-                                  {item.label}
+                                  {t(item.label)}
                                 </FormLabel>
                               </FormItem>
                             );
@@ -159,7 +161,7 @@ export default function RoleManagementPage() {
                   )}
                 />
                 <DialogFooter>
-                  <Button type="submit">Create Role</Button>
+                  <Button type="submit">{t('Create Role')}</Button>
                 </DialogFooter>
               </form>
             </Form>
@@ -168,7 +170,7 @@ export default function RoleManagementPage() {
       </CardHeader>
       <CardContent>
         <p className="text-muted-foreground">
-          Role management interface coming soon.
+          {t('Role management interface coming soon.')}
         </p>
       </CardContent>
     </Card>

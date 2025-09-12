@@ -1,25 +1,28 @@
 
+'use client';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { systemLogs } from "@/lib/data";
 import { format } from "date-fns";
+import { useTranslation } from "@/hooks/use-translation";
 
 export default function SystemLogsPage() {
+    const { t } = useTranslation();
   return (
     <Card>
       <CardHeader>
-        <CardTitle>System Logs</CardTitle>
+        <CardTitle>{t('System Logs')}</CardTitle>
         <CardDescription>
-          An audit trail of all actions and alerts within the system.
+          {t('An audit trail of all actions and alerts within the system.')}
         </CardDescription>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Timestamp</TableHead>
-              <TableHead>User / System</TableHead>
-              <TableHead>Action</TableHead>
+              <TableHead>{t('Timestamp')}</TableHead>
+              <TableHead>{t('User / System')}</TableHead>
+              <TableHead>{t('Action')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

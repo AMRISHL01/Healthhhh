@@ -1,3 +1,5 @@
+
+'use client';
 import {
   Activity,
   Droplet,
@@ -13,8 +15,10 @@ import VitalsChart from "./vitals-chart";
 import AiSummary from "./ai-summary";
 import VitalsForm from "./vitals-form";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/hooks/use-translation";
 
 export default function PatientDashboard() {
+  const { t } = useTranslation();
   const latestVitals = patientUser.vitals[0];
   const isCritical = patientUser.alertStatus === 'critical';
 
@@ -46,16 +50,15 @@ export default function PatientDashboard() {
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-lg font-bold text-destructive">
               <AlertTriangle className="mr-2 inline-block h-5 w-5" />
-              Critical Alert!
+              {t('Critical Alert!')}
             </CardTitle>
              <Button asChild variant="destructive">
-              <Link href="/patient/emergency">Get Help Now</Link>
+              <Link href="/patient/emergency">{t('Get Help Now')}</Link>
             </Button>
           </CardHeader>
           <CardContent>
             <p className="text-destructive">
-              Your recent vitals are outside the normal range. Please seek
-              immediate medical attention.
+              {t('Your recent vitals are outside the normal range. Please seek immediate medical attention.')}
             </p>
           </CardContent>
         </Card>
@@ -67,7 +70,7 @@ export default function PatientDashboard() {
             <Card key={vital.title}>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  {vital.title}
+                  {t(vital.title)}
                 </CardTitle>
                 <vital.icon
                   className={cn("h-4 w-4 text-muted-foreground", vital.color)}
@@ -76,7 +79,7 @@ export default function PatientDashboard() {
               <CardContent>
                 <div className="text-2xl font-bold">{vital.value}</div>
                 <p className="text-xs text-muted-foreground">
-                  Latest reading from today
+                  {t('Latest reading from today')}
                 </p>
               </CardContent>
             </Card>
@@ -88,7 +91,7 @@ export default function PatientDashboard() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Activity className="h-5 w-5" />
-                Vitals History
+                {t('Vitals History')}
               </CardTitle>
             </CardHeader>
             <CardContent>

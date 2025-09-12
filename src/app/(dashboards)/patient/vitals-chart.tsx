@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -19,27 +20,31 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { useTranslation } from "@/hooks/use-translation";
 
 type VitalsChartProps = {
   vitals: Vital[];
 };
 
-const chartConfig = {
-  heartRate: {
-    label: "Heart Rate",
-    color: "hsl(var(--chart-1))",
-  },
-  spo2: {
-    label: "SpO₂",
-    color: "hsl(var(--chart-2))",
-  },
-  temperature: {
-    label: "Temperature",
-    color: "hsl(var(--chart-3))",
-  },
-};
 
 export default function VitalsChart({ vitals }: VitalsChartProps) {
+  const { t } = useTranslation();
+
+  const chartConfig = {
+    heartRate: {
+      label: t("Heart Rate"),
+      color: "hsl(var(--chart-1))",
+    },
+    spo2: {
+      label: "SpO₂",
+      color: "hsl(var(--chart-2))",
+    },
+    temperature: {
+      label: t("Temperature"),
+      color: "hsl(var(--chart-3))",
+    },
+  };
+
   const chartData = vitals
     .map((v) => ({
       ...v,
@@ -85,6 +90,7 @@ export default function VitalsChart({ vitals }: VitalsChartProps) {
           strokeWidth={2}
           dot={true}
           yAxisId="left"
+          name={chartConfig.heartRate.label}
         />
         <Line
           dataKey="spo2"
@@ -93,6 +99,7 @@ export default function VitalsChart({ vitals }: VitalsChartProps) {
           strokeWidth={2}
           dot={true}
           yAxisId="left"
+          name={chartConfig.spo2.label}
         />
         <Line
           dataKey="temperature"
@@ -101,6 +108,7 @@ export default function VitalsChart({ vitals }: VitalsChartProps) {
           strokeWidth={2}
           dot={true}
           yAxisId="right"
+          name={chartConfig.temperature.label}
         />
       </LineChart>
     </ChartContainer>

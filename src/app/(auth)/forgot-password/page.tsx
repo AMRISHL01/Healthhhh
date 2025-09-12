@@ -24,6 +24,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import Logo from '@/components/logo';
+import { useTranslation } from '@/hooks/use-translation';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email.' }),
@@ -31,6 +32,8 @@ const formSchema = z.object({
 
 export default function ForgotPasswordPage() {
   const { toast } = useToast();
+    const { t } = useTranslation();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -41,8 +44,8 @@ export default function ForgotPasswordPage() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
     toast({
-      title: 'Password Reset Email Sent',
-      description: `If an account exists for ${values.email}, a password reset link has been sent.`,
+      title: t('Password Reset Email Sent'),
+      description: t('If an account exists for {{email}}, a password reset link has been sent.', { email: values.email }),
     });
     form.reset();
   }
@@ -57,10 +60,9 @@ export default function ForgotPasswordPage() {
       </div>
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl">Forgot Password</CardTitle>
+          <CardTitle className="text-2xl">{t('Forgot Password')}</CardTitle>
           <CardDescription>
-            Enter your email and we will send you a link to reset your
-            password.
+            {t('Enter your email and we will send you a link to reset your password.')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -71,7 +73,7 @@ export default function ForgotPasswordPage() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t('Email')}</FormLabel>
                     <FormControl>
                       <Input
                         type="email"
@@ -84,14 +86,14 @@ export default function ForgotPasswordPage() {
                 )}
               />
               <Button type="submit" className="w-full">
-                Send Reset Link
+                {t('Send Reset Link')}
               </Button>
             </form>
           </Form>
           <div className="mt-4 text-center text-sm">
-            Remember your password?{' '}
+            {t('Remember your password? ')}{' '}
             <Link href="/login" className="underline">
-              Log in
+              {t('Log in')}
             </Link>
           </div>
         </CardContent>
