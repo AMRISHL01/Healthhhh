@@ -4,14 +4,16 @@
 import { createContext, useState, useCallback, ReactNode } from 'react';
 import en from '@/locales/en.json';
 import es from '@/locales/es.json';
+import ta from '@/locales/ta.json';
 
-type Locale = 'en' | 'es';
+type Locale = 'en' | 'es' | 'ta';
 
 type Translations = { [key: string]: string };
 
 const translations: { [key in Locale]: Translations } = {
   en,
   es,
+  ta,
 };
 
 interface I18nContextType {

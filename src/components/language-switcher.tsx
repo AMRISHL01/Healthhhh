@@ -35,6 +35,12 @@ export default function LanguageSwitcher() {
         >
           Español
         </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => setLocale('ta')}
+          disabled={locale === 'ta'}
+        >
+          தமிழ்
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
