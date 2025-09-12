@@ -17,6 +17,7 @@ import {
   ClipboardList,
   Server,
   FileCog,
+  ShieldAlert,
 } from "lucide-react";
 
 import {
@@ -75,13 +76,21 @@ export default function DashboardLayout({
       ];
     }
     if (isPatient) {
-      return [
+       const items = [
         { href: "/patient", icon: Home, label: "Dashboard" },
         { href: "/patient/reports", icon: FileText, label: "Health Reports" },
         { href: "/patient/chat", icon: MessageSquare, label: "Chat with Doctor" },
-        { href: "#", icon: User, label: "Profile" },
-        { href: "#", icon: Settings, label: "Settings" },
       ];
+
+      if (patientUser.alertStatus === 'critical') {
+        items.push({ href: "/patient/emergency", icon: ShieldAlert, label: "Emergency" });
+      }
+
+      items.push(
+        { href: "#", icon: User, label: "Profile" },
+        { href: "#", icon: Settings, label: "Settings" }
+      );
+      return items;
     }
     if (isNurse) {
       return [
@@ -128,6 +137,7 @@ export default function DashboardLayout({
                   asChild
                   isActive={pathname === item.href}
                   tooltip={item.label}
+                  className={item.label === 'Emergency' ? 'text-destructive hover:bg-destructive/10 hover:text-destructive' : ''}
                 >
                   <Link href={item.href}>
                     <item.icon />

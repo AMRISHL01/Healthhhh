@@ -37,9 +37,9 @@ export const patients: Patient[] = [
     avatar: '3',
     age: 34,
     gender: 'Male',
-    alertStatus: 'normal',
+    alertStatus: 'critical', // Changed to critical for demo
     vitals: [
-      { date: '2024-07-20T08:00:00Z', heartRate: 72, spo2: 99, temperature: 36.8 },
+      { date: '2024-07-20T08:00:00Z', heartRate: 130, spo2: 90, temperature: 39.1 },
       { date: '2024-07-19T08:00:00Z', heartRate: 75, spo2: 98, temperature: 36.9 },
       { date: '2024-07-18T08:00:00Z', heartRate: 70, spo2: 99, temperature: 37.0 },
       { date: '2024-07-17T08:00:00Z', heartRate: 68, spo2: 99, temperature: 36.7 },
