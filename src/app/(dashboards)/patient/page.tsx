@@ -4,23 +4,24 @@ import {
   Thermometer,
   HeartPulse,
   AlertTriangle,
+  WandSparkles,
 } from 'lucide-react';
 import Link from 'next/link';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { patientUser } from '@/lib/data';
 import VitalsChart from './vitals-chart';
 import AiSummary from './ai-summary';
 import VitalsForm from './vitals-form';
 import { cn } from '@/lib/utils';
-import { useTranslation } from '@/hooks/use-translation';
 import { generateAiHealthSummary } from '@/ai/flows/generate-ai-health-summaries';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Suspense } from 'react';
+import { useTranslation } from '@/hooks/use-translation';
+
 
 async function AiSummaryWrapper() {
-  const { t } = useTranslation();
-  let summary = null;
+  let summary: string | null = null;
   let hasError = false;
   try {
     const result = await generateAiHealthSummary({
@@ -29,13 +30,13 @@ async function AiSummaryWrapper() {
     summary = result.summary;
   } catch (error) {
     console.error('Failed to generate AI summary:', error);
-    summary = t('Could not generate AI summary at this time.');
     hasError = true;
   }
   return <AiSummary summary={summary} loading={false} hasError={hasError} />;
 }
 
 function AiSummaryFallback() {
+  // This is a client component, so it can use hooks.
   const { t } = useTranslation();
   return (
     <Card>
@@ -59,7 +60,9 @@ function AiSummaryFallback() {
   );
 }
 
-export default async function PatientDashboard() {
+// We create a separate client component for the main content
+// to handle translations.
+function PatientDashboardClient() {
   const { t } = useTranslation();
   const latestVitals = patientUser.vitals[0];
   const isCritical = patientUser.alertStatus === 'critical';
@@ -86,7 +89,7 @@ export default async function PatientDashboard() {
   ];
 
   return (
-    <div className="space-y-6">
+     <div className="space-y-6">
       {isCritical && (
         <Card className="border-destructive bg-destructive/10">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -146,11 +149,17 @@ export default async function PatientDashboard() {
 
         <div className="col-span-full space-y-6 lg:col-span-1">
           <Suspense fallback={<AiSummaryFallback />}>
+            {/* @ts-ignore */}
             <AiSummaryWrapper />
           </Suspense>
           <VitalsForm />
         </div>
       </div>
     </div>
-  );
+  )
+}
+
+
+export default function PatientDashboard() {
+  return <PatientDashboardClient />;
 }

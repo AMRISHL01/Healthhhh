@@ -20,6 +20,10 @@ type AiSummaryProps = {
 export default function AiSummary({ summary, loading, hasError }: AiSummaryProps) {
     const { t } = useTranslation();
 
+    const displaySummary = hasError
+    ? t('Could not generate AI summary at this time.')
+    : summary;
+
   return (
     <Card>
       <CardHeader>
@@ -39,7 +43,7 @@ export default function AiSummary({ summary, loading, hasError }: AiSummaryProps
             <Skeleton className="h-4 w-4/5" />
           </div>
         ) : (
-          <p className="text-sm text-muted-foreground">{summary}</p>
+          <p className="text-sm text-muted-foreground">{displaySummary}</p>
         )}
       </CardContent>
     </Card>
