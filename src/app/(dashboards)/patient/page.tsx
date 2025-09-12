@@ -1,45 +1,87 @@
-
-'use client';
 import {
   Activity,
   Droplet,
   Thermometer,
   HeartPulse,
   AlertTriangle,
-} from "lucide-react";
-import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { patientUser } from "@/lib/data";
-import VitalsChart from "./vitals-chart";
-import AiSummary from "./ai-summary";
-import VitalsForm from "./vitals-form";
-import { cn } from "@/lib/utils";
-import { useTranslation } from "@/hooks/use-translation";
+} from 'lucide-react';
+import Link from 'next/link';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { patientUser } from '@/lib/data';
+import VitalsChart from './vitals-chart';
+import AiSummary from './ai-summary';
+import VitalsForm from './vitals-form';
+import { cn } from '@/lib/utils';
+import { useTranslation } from '@/hooks/use-translation';
+import { generateAiHealthSummary } from '@/ai/flows/generate-ai-health-summaries';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Suspense } from 'react';
 
-export default function PatientDashboard() {
+async function AiSummaryWrapper() {
+  const { t } = useTranslation();
+  let summary = null;
+  let hasError = false;
+  try {
+    const result = await generateAiHealthSummary({
+      vitalsData: JSON.stringify(patientUser.vitals),
+    });
+    summary = result.summary;
+  } catch (error) {
+    console.error('Failed to generate AI summary:', error);
+    summary = t('Could not generate AI summary at this time.');
+    hasError = true;
+  }
+  return <AiSummary summary={summary} loading={false} hasError={hasError} />;
+}
+
+function AiSummaryFallback() {
+  const { t } = useTranslation();
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <WandSparkles className="h-5 w-5 text-primary" />
+          {t('AI Health Summary')}
+        </CardTitle>
+        <CardDescription>
+          {t('An AI-generated overview of your recent health data.')}
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-4/5" />
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+export default async function PatientDashboard() {
   const { t } = useTranslation();
   const latestVitals = patientUser.vitals[0];
   const isCritical = patientUser.alertStatus === 'critical';
 
   const vitalCards = [
     {
-      title: "Heart Rate",
+      title: 'Heart Rate',
       value: `${latestVitals.heartRate} bpm`,
       icon: HeartPulse,
-      color: "text-red-500",
+      color: 'text-red-500',
     },
     {
-      title: "SpO₂",
+      title: 'SpO₂',
       value: `${latestVitals.spo2}%`,
       icon: Droplet,
-      color: "text-blue-500",
+      color: 'text-blue-500',
     },
     {
-      title: "Temperature",
+      title: 'Temperature',
       value: `${latestVitals.temperature}°C`,
       icon: Thermometer,
-      color: "text-orange-500",
+      color: 'text-orange-500',
     },
   ];
 
@@ -52,13 +94,15 @@ export default function PatientDashboard() {
               <AlertTriangle className="mr-2 inline-block h-5 w-5" />
               {t('Critical Alert!')}
             </CardTitle>
-             <Button asChild variant="destructive">
+            <Button asChild variant="destructive">
               <Link href="/patient/emergency">{t('Get Help Now')}</Link>
             </Button>
           </CardHeader>
           <CardContent>
             <p className="text-destructive">
-              {t('Your recent vitals are outside the normal range. Please seek immediate medical attention.')}
+              {t(
+                'Your recent vitals are outside the normal range. Please seek immediate medical attention.'
+              )}
             </p>
           </CardContent>
         </Card>
@@ -73,7 +117,7 @@ export default function PatientDashboard() {
                   {t(vital.title)}
                 </CardTitle>
                 <vital.icon
-                  className={cn("h-4 w-4 text-muted-foreground", vital.color)}
+                  className={cn('h-4 w-4 text-muted-foreground', vital.color)}
                 />
               </CardHeader>
               <CardContent>
@@ -101,7 +145,9 @@ export default function PatientDashboard() {
         </div>
 
         <div className="col-span-full space-y-6 lg:col-span-1">
-          <AiSummary vitals={patientUser.vitals} />
+          <Suspense fallback={<AiSummaryFallback />}>
+            <AiSummaryWrapper />
+          </Suspense>
           <VitalsForm />
         </div>
       </div>

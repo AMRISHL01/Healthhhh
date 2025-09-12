@@ -8,39 +8,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { generateAiHealthSummary } from "@/ai/flows/generate-ai-health-summaries";
-import type { Vital } from "@/lib/types";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslation } from "@/hooks/use-translation";
-import { useEffect, useState } from "react";
 
 type AiSummaryProps = {
-  vitals: Vital[];
+  summary: string | null;
+  loading: boolean;
+  hasError: boolean;
 };
 
-export default function AiSummary({ vitals }: AiSummaryProps) {
+export default function AiSummary({ summary, loading, hasError }: AiSummaryProps) {
     const { t } = useTranslation();
-    const [summary, setSummary] = useState<string | null>(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        async function getSummary() {
-            setLoading(true);
-            try {
-                const { summary } = await generateAiHealthSummary({
-                    vitalsData: JSON.stringify(vitals),
-                });
-                setSummary(summary);
-            } catch (error) {
-                console.error("Failed to generate AI summary:", error);
-                setSummary(t('Could not generate AI summary at this time.'));
-            } finally {
-                setLoading(false);
-            }
-        }
-        getSummary();
-    }, [vitals, t]);
-
 
   return (
     <Card>
