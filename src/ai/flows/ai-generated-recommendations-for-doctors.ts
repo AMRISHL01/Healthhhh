@@ -10,6 +10,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import {cache} from 'react';
 
 const GenerateCareRecommendationInputSchema = z.object({
   patientId: z.string().describe('The ID of the patient.'),
@@ -28,11 +29,13 @@ export type GenerateCareRecommendationOutput = z.infer<
   typeof GenerateCareRecommendationOutputSchema
 >;
 
-export async function generateCareRecommendation(
-  input: GenerateCareRecommendationInput
-): Promise<GenerateCareRecommendationOutput> {
-  return generateCareRecommendationFlow(input);
-}
+export const generateCareRecommendation = cache(
+  async (
+    input: GenerateCareRecommendationInput
+  ): Promise<GenerateCareRecommendationOutput> => {
+    return generateCareRecommendationFlow(input);
+  }
+);
 
 const prompt = ai.definePrompt({
   name: 'generateCareRecommendationPrompt',

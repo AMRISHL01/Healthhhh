@@ -9,6 +9,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import {cache} from 'react';
 
 const GenerateAiHealthSummaryInputSchema = z.object({
   vitalsData: z.string().describe('The patient vitals data as a JSON string.'),
@@ -20,9 +21,13 @@ const GenerateAiHealthSummaryOutputSchema = z.object({
 });
 export type GenerateAiHealthSummaryOutput = z.infer<typeof GenerateAiHealthSummaryOutputSchema>;
 
-export async function generateAiHealthSummary(input: GenerateAiHealthSummaryInput): Promise<GenerateAiHealthSummaryOutput> {
-  return generateAiHealthSummaryFlow(input);
-}
+export const generateAiHealthSummary = cache(
+  async (
+    input: GenerateAiHealthSummaryInput
+  ): Promise<GenerateAiHealthSummaryOutput> => {
+    return generateAiHealthSummaryFlow(input);
+  }
+);
 
 const prompt = ai.definePrompt({
   name: 'generateAiHealthSummaryPrompt',
