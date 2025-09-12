@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -27,7 +27,7 @@ import {
 import { Input } from '@/components/ui/input';
 import Logo from '@/components/logo';
 import { useToast } from '@/hooks/use-toast';
-import { app } from '@/lib/firebase';
+import { useFirebaseAuth } from '@/hooks/use-firebase-auth';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Invalid email address.' }),
@@ -39,6 +39,7 @@ const formSchema = z.object({
 export default function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
+  const auth = useFirebaseAuth();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,7 +49,14 @@ export default function LoginPage() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const auth = getAuth(app);
+     if (!auth) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Firebase is not initialized.',
+      });
+      return;
+    }
     try {
       await signInWithEmailAndPassword(auth, values.email, values.password);
       toast({

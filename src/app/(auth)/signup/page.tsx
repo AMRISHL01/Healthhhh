@@ -4,7 +4,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
-  getAuth,
   createUserWithEmailAndPassword,
   updateProfile,
 } from 'firebase/auth';
@@ -38,7 +37,7 @@ import {
 } from '@/components/ui/select';
 import Logo from '@/components/logo';
 import { useToast } from '@/hooks/use-toast';
-import { app } from '@/lib/firebase';
+import { useFirebaseAuth } from '@/hooks/use-firebase-auth';
 
 const formSchema = z.object({
   fullName: z.string().min(2, { message: 'Name is too short.' }),
@@ -52,6 +51,7 @@ const formSchema = z.object({
 export default function SignupPage() {
   const router = useRouter();
   const { toast } = useToast();
+  const auth = useFirebaseAuth();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -62,7 +62,14 @@ export default function SignupPage() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const auth = getAuth(app);
+    if (!auth) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Firebase is not initialized.',
+      });
+      return;
+    }
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
