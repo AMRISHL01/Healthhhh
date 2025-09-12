@@ -1,18 +1,26 @@
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
 
 export default function LandingPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <header className="container z-40 bg-background">
         <div className="flex h-20 items-center justify-between py-6">
-          <div className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <Logo className="h-8 w-8" />
             <span className="text-lg font-semibold">HealthFlow</span>
-          </div>
+          </Link>
+          <nav className="flex items-center gap-4">
+            <Button variant="ghost" asChild>
+              <Link href="/login">Login</Link>
+            </Button>
+            <Button asChild>
+              <Link href="/signup">Sign Up</Link>
+            </Button>
+          </nav>
         </div>
       </header>
       <main className="flex-1">
@@ -25,32 +33,13 @@ export default function LandingPage() {
               HealthFlow brings cutting-edge technology to healthcare, enabling
               continuous and connected patient monitoring for better outcomes.
             </p>
-            <div className="mt-4 rounded-lg border bg-card p-6 shadow-sm">
-              <h3 className="mb-4 text-lg font-medium">
-                Enter the Dashboard as:
-              </h3>
-              <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-                <Button asChild size="lg">
-                  <Link href="/patient">
-                    Patient <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
-                </Button>
-                <Button asChild size="lg">
-                  <Link href="/doctor">
-                    Doctor <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
-                </Button>
-                <Button asChild size="lg">
-                  <Link href="/nurse">
-                    Nurse <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
-                </Button>
-                <Button asChild size="lg">
-                  <Link href="/admin">
-                    Admin <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
-                </Button>
-              </div>
+             <div className="mt-4 flex gap-4">
+              <Button asChild size="lg">
+                <Link href="/signup">Get Started</Link>
+              </Button>
+              <Button variant="outline" size="lg" asChild>
+                <Link href="#demo">See Demo</Link>
+              </Button>
             </div>
           </div>
         </section>
