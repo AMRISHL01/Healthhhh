@@ -45,9 +45,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { patientUser, doctorUser, nurseUser, adminUser } from "@/lib/data";
-import { useAuth } from "../(auth)/auth-provider";
-import { signOut } from "firebase/auth";
-import { auth } from "@/lib/firebase";
 
 export default function DashboardLayout({
   children,
@@ -56,32 +53,33 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, loading } = useAuth();
-  
-  const handleLogout = async () => {
-    await signOut(auth);
+
+  const handleLogout = () => {
     router.push('/login');
   };
   
+  const getRoleFromPath = () => {
+    if (pathname.startsWith("/doctor")) return "doctor";
+    if (pathname.startsWith("/patient")) return "patient";
+    if (pathname.startsWith("/nurse")) return "nurse";
+    if (pathname.startsWith("/admin")) return "admin";
+    return "patient"; // Default
+  }
+
+  const role = getRoleFromPath();
+
   const getUserData = () => {
-    if (user?.role === "doctor") return { data: doctorUser, role: "Doctor" };
-    if (user?.role === "patient") return { data: patientUser, role: "Patient" };
-    if (user?.role === "nurse") return { data: nurseUser, role: "Nurse" };
-    if (user?.role === "admin") return { data: adminUser, role: "Admin" };
-    return { data: patientUser, role: "Patient" }; // Default
+    if (role === "doctor") return { data: doctorUser, role: "Doctor", name: doctorUser.name };
+    if (role === "patient") return { data: patientUser, role: "Patient", name: patientUser.name };
+    if (role === "nurse") return { data: nurseUser, role: "Nurse", name: nurseUser.name };
+    if (role === "admin") return { data: adminUser, role: "Admin", name: adminUser.name };
+    return { data: patientUser, role: "Patient", name: "User" }; // Default
   };
 
-  const { data: userData, role } = getUserData();
-
-  React.useEffect(() => {
-    if (!loading && !user) {
-      router.push('/login');
-    }
-  }, [user, loading, router]);
-
+  const { data: userData, role: roleName, name } = getUserData();
 
   const getNavItems = () => {
-    if (user?.role === "doctor") {
+    if (role === "doctor") {
       return [
         { href: "/doctor", icon: Home, label: "Dashboard" },
         { href: "/doctor/analytics", icon: BarChart, label: "Analytics" },
@@ -89,7 +87,7 @@ export default function DashboardLayout({
         { href: "#", icon: Settings, label: "Settings" },
       ];
     }
-    if (user?.role === "patient") {
+    if (role === "patient") {
        const items = [
         { href: "/patient", icon: Home, label: "Dashboard" },
         { href: "/patient/reports", icon: FileText, label: "Health Reports" },
@@ -106,14 +104,14 @@ export default function DashboardLayout({
       );
       return items;
     }
-    if (user?.role === "nurse") {
+    if (role === "nurse") {
       return [
         { href: "/nurse", icon: Home, label: "Dashboard" },
         { href: "#", icon: User, label: "Profile" },
         { href: "#", icon: Settings, label: "Settings" },
       ];
     }
-     if (user?.role === "admin") {
+     if (role === "admin") {
       return [
         { href: "/admin", icon: Home, label: "Dashboard" },
         { href: "/admin/roles", icon: Users, label: "Role Management" },
@@ -127,19 +125,11 @@ export default function DashboardLayout({
   const navItems = getNavItems();
   
   const getDashboardTitle = () => {
-    if (user?.role === "doctor") return "Doctor Dashboard";
-    if (user?.role === "patient") return "Patient Dashboard";
-    if (user?.role === "nurse") return "Nurse Dashboard";
-    if (user?.role === "admin") return "Admin Dashboard";
+    if (role === "doctor") return "Doctor Dashboard";
+    if (role === "patient") return "Patient Dashboard";
+    if (role === "nurse") return "Nurse Dashboard";
+    if (role === "admin") return "Admin Dashboard";
     return "Dashboard";
-  }
-
-  if (loading) {
-    return <div className="flex h-screen items-center justify-center">Loading...</div>;
-  }
-  
-  if (!user) {
-    return null;
   }
 
   return (
@@ -177,14 +167,14 @@ export default function DashboardLayout({
                 <Avatar className="h-8 w-8">
                   <AvatarImage
                     src={`https://picsum.photos/seed/${userData.avatar}/100/100`}
-                    alt={user.displayName || 'User'}
+                    alt={name}
                   />
-                  <AvatarFallback>{(user.displayName || 'U').charAt(0)}</AvatarFallback>
+                  <AvatarFallback>{name.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <div className="flex-1 truncate">
-                  <p className="font-semibold">{user.displayName || 'User'}</p>
+                  <p className="font-semibold">{name}</p>
                   <p className="text-xs text-muted-foreground">
-                    {role}
+                    {roleName}
                   </p>
                 </div>
               </button>

@@ -18,10 +18,6 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from '@/lib/firebase';
-import { doc, getDoc } from 'firebase/firestore';
-
 
 const formSchema = z.object({
   email: z.string().email({
@@ -44,47 +40,24 @@ export function LoginForm() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
-      const user = userCredential.user;
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    toast({
+      title: 'Login Successful',
+      description: 'Redirecting to your dashboard...',
+    });
 
-      const userDocRef = doc(db, 'users', user.uid);
-      const userDoc = await getDoc(userDocRef);
-      
-      let role = 'patient'; // default role
-      if (userDoc.exists()) {
-        role = userDoc.data()?.role || 'patient';
-      }
+    const email = values.email.toLowerCase();
 
-      toast({
-        title: 'Login Successful',
-        description: 'Redirecting to your dashboard...',
-      });
-
-      switch (role) {
-        case 'doctor':
-          router.push('/doctor');
-          break;
-        case 'patient':
-          router.push('/patient');
-          break;
-        case 'nurse':
-          router.push('/nurse');
-          break;
-        case 'admin':
-          router.push('/admin');
-          break;
-        default:
-          router.push('/patient');
-      }
-    } catch (error: any) {
-      console.error('Login error:', error);
-      toast({
-        title: 'Login Failed',
-        description: error.message,
-        variant: 'destructive',
-      });
+    if (email.includes('doctor')) {
+      router.push('/doctor');
+    } else if (email.includes('patient')) {
+      router.push('/patient');
+    } else if (email.includes('nurse')) {
+      router.push('/nurse');
+    } else if (email.includes('admin')) {
+      router.push('/admin');
+    } else {
+      router.push('/patient');
     }
   }
 
