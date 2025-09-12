@@ -3,10 +3,6 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import {
-  createUserWithEmailAndPassword,
-  updateProfile,
-} from 'firebase/auth';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -37,7 +33,6 @@ import {
 } from '@/components/ui/select';
 import Logo from '@/components/logo';
 import { useToast } from '@/hooks/use-toast';
-import { useFirebaseAuth } from '@/hooks/use-firebase-auth';
 
 const formSchema = z.object({
   fullName: z.string().min(2, { message: 'Name is too short.' }),
@@ -51,7 +46,6 @@ const formSchema = z.object({
 export default function SignupPage() {
   const router = useRouter();
   const { toast } = useToast();
-  const auth = useFirebaseAuth();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -62,39 +56,12 @@ export default function SignupPage() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!auth) {
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: 'Firebase is not initialized.',
-      });
-      return;
-    }
-    try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        values.email,
-        values.password
-      );
-      await updateProfile(userCredential.user, {
-        displayName: values.fullName,
-      });
-
-      // Here you would typically also save the role to your database (e.g., Firestore)
-      // associated with the user's UID.
-
-      toast({
-        title: 'Account Created',
-        description: 'Your account has been successfully created.',
-      });
-      router.push(`/${values.role}`);
-    } catch (error: any) {
-      toast({
-        variant: 'destructive',
-        title: 'Sign Up Failed',
-        description: error.message,
-      });
-    }
+    console.log('Signup form submitted:', values);
+    toast({
+      title: 'Account Created (Simulated)',
+      description: 'Your account has been successfully created.',
+    });
+    router.push(`/${values.role}`);
   }
 
   return (

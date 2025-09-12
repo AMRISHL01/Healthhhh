@@ -3,7 +3,6 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { sendPasswordResetEmail } from 'firebase/auth';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -27,7 +26,6 @@ import {
 import { Input } from '@/components/ui/input';
 import Logo from '@/components/logo';
 import { useToast } from '@/hooks/use-toast';
-import { useFirebaseAuth } from '@/hooks/use-firebase-auth';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Invalid email address.' }),
@@ -36,7 +34,6 @@ const formSchema = z.object({
 export default function ForgotPasswordPage() {
   const router = useRouter();
   const { toast } = useToast();
-  const auth = useFirebaseAuth();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,29 +42,13 @@ export default function ForgotPasswordPage() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!auth) {
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: 'Firebase is not initialized.',
-      });
-      return;
-    }
-    try {
-      await sendPasswordResetEmail(auth, values.email);
-      toast({
-        title: 'Password Reset Email Sent',
-        description:
-          'Check your inbox for a link to reset your password.',
-      });
-      router.push('/login');
-    } catch (error: any) {
-      toast({
-        variant: 'destructive',
-        title: 'Error Sending Email',
-        description: error.message,
-      });
-    }
+    console.log('Forgot password form submitted:', values);
+    toast({
+      title: 'Password Reset Email Sent (Simulated)',
+      description:
+        'If this were a real app, a password reset link would be sent to your email.',
+    });
+    router.push('/login');
   }
 
   return (
