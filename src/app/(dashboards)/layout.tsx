@@ -1,3 +1,4 @@
+
 "use client";
 
 import * as React from "react";
@@ -51,23 +52,19 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const isDoctor = pathname.startsWith("/doctor");
-  const isPatient = pathname.startsWith("/patient");
-  const isNurse = pathname.startsWith("/nurse");
-  const isAdmin = pathname.startsWith("/admin");
-
+  
   const getUser = () => {
-    if (isDoctor) return { user: doctorUser, role: "Doctor" };
-    if (isPatient) return { user: patientUser, role: "Patient" };
-    if (isNurse) return { user: nurseUser, role: "Nurse" };
-    if (isAdmin) return { user: adminUser, role: "Admin" };
+    if (pathname.startsWith("/doctor")) return { user: doctorUser, role: "Doctor" };
+    if (pathname.startsWith("/patient")) return { user: patientUser, role: "Patient" };
+    if (pathname.startsWith("/nurse")) return { user: nurseUser, role: "Nurse" };
+    if (pathname.startsWith("/admin")) return { user: adminUser, role: "Admin" };
     return { user: patientUser, role: "Patient" }; // Default
   };
 
   const { user, role } = getUser();
 
   const getNavItems = () => {
-    if (isDoctor) {
+    if (pathname.startsWith("/doctor")) {
       return [
         { href: "/doctor", icon: Home, label: "Dashboard" },
         { href: "/doctor/analytics", icon: BarChart, label: "Analytics" },
@@ -75,7 +72,7 @@ export default function DashboardLayout({
         { href: "#", icon: Settings, label: "Settings" },
       ];
     }
-    if (isPatient) {
+    if (pathname.startsWith("/patient")) {
        const items = [
         { href: "/patient", icon: Home, label: "Dashboard" },
         { href: "/patient/reports", icon: FileText, label: "Health Reports" },
@@ -92,14 +89,14 @@ export default function DashboardLayout({
       );
       return items;
     }
-    if (isNurse) {
+    if (pathname.startsWith("/nurse")) {
       return [
         { href: "/nurse", icon: Home, label: "Dashboard" },
         { href: "#", icon: User, label: "Profile" },
         { href: "#", icon: Settings, label: "Settings" },
       ];
     }
-     if (isAdmin) {
+     if (pathname.startsWith("/admin")) {
       return [
         { href: "/admin", icon: Home, label: "Dashboard" },
         { href: "/admin/roles", icon: Users, label: "Role Management" },
@@ -113,10 +110,10 @@ export default function DashboardLayout({
   const navItems = getNavItems();
   
   const getDashboardTitle = () => {
-    if (isDoctor) return "Doctor Dashboard";
-    if (isPatient) return "Patient Dashboard";
-    if (isNurse) return "Nurse Dashboard";
-    if (isAdmin) return "Admin Dashboard";
+    if (pathname.startsWith("/doctor")) return "Doctor Dashboard";
+    if (pathname.startsWith("/patient")) return "Patient Dashboard";
+    if (pathname.startsWith("/nurse")) return "Nurse Dashboard";
+    if (pathname.startsWith("/admin")) return "Admin Dashboard";
     return "Dashboard";
   }
 
