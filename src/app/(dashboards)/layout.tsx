@@ -12,6 +12,7 @@ import {
   Shield,
   Users,
   BarChart,
+  FileText,
 } from "lucide-react";
 
 import {
@@ -51,12 +52,12 @@ export default function DashboardLayout({
   const navItems = isDoctor
     ? [
         { href: "/doctor", icon: Home, label: "Dashboard" },
-        { href: "#", icon: Users, label: "Patients" },
-        { href: "#", icon: BarChart, label: "Analytics" },
+        { href: "/doctor/analytics", icon: BarChart, label: "Analytics" },
         { href: "#", icon: Settings, label: "Settings" },
       ]
     : [
         { href: "/patient", icon: Home, label: "Dashboard" },
+        { href: "/patient/reports", icon: FileText, label: "Health Reports" },
         { href: "#", icon: User, label: "Profile" },
         { href: "#", icon: Settings, label: "Settings" },
       ];

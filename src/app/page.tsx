@@ -1,65 +1,77 @@
 import Link from "next/link";
-import { Stethoscope, User } from "lucide-react";
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
+import Image from "next/image";
 
-export default function RoleSelectionPage() {
+export default function LandingPage() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
-      <div className="w-full max-w-md space-y-8 text-center">
-        <div className="flex flex-col items-center space-y-4">
-          <Logo className="h-16 w-16" />
-          <h1 className="font-headline text-4xl font-bold tracking-tight text-foreground">
-            Welcome to HealthFlow Remote
-          </h1>
-          <p className="text-muted-foreground">
-            Your partner in continuous and connected healthcare.
+    <div className="flex min-h-screen flex-col">
+      <header className="container z-40 bg-background">
+        <div className="flex h-20 items-center justify-between py-6">
+          <div className="flex items-center gap-2">
+            <Logo className="h-8 w-8" />
+            <span className="text-lg font-semibold">HealthFlow</span>
+          </div>
+          <div className="flex items-center space-x-4">
+            <Button variant="ghost" asChild>
+              <Link href="/login">Login</Link>
+            </Button>
+            <Button asChild>
+              <Link href="/signup">Sign Up</Link>
+            </Button>
+          </div>
+        </div>
+      </header>
+      <main className="flex-1">
+        <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
+          <div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center">
+            <h1 className="font-headline text-3xl font-bold sm:text-5xl md:text-6xl lg:text-7xl">
+              Monitor patients remotely with AI + IoT
+            </h1>
+            <p className="max-w-[42rem] text-muted-foreground sm:text-xl">
+              HealthFlow brings cutting-edge technology to healthcare, enabling
+              continuous and connected patient monitoring for better outcomes.
+            </p>
+            <div className="flex space-x-4">
+              <Button asChild size="lg">
+                <Link href="/signup">Get Started</Link>
+              </Button>
+              <Button asChild size="lg" variant="outline">
+                <Link href="#demo">Watch Demo</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+        <section id="demo" className="container space-y-6 bg-slate-50 py-8 dark:bg-transparent md:py-12 lg:py-24">
+          <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
+            <h2 className="font-headline text-3xl font-bold leading-[1.1] sm:text-3xl md:text-5xl">
+              See It In Action
+            </h2>
+            <p className="max-w-[85%] text-muted-foreground sm:text-lg">
+              Watch this short video to see how HealthFlow can revolutionize remote patient care.
+            </p>
+          </div>
+          <div className="mx-auto max-w-4xl rounded-lg border bg-card shadow-sm">
+             <div className="aspect-video w-full">
+                <Image 
+                  src="https://picsum.photos/seed/demovid/1280/720"
+                  alt="App Demo Video"
+                  width={1280}
+                  height={720}
+                  className="rounded-lg"
+                  data-ai-hint="app video"
+                />
+             </div>
+          </div>
+        </section>
+      </main>
+      <footer className="py-6 md:px-8 md:py-0">
+        <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+          <p className="text-balance text-center text-sm leading-loose text-muted-foreground md:text-left">
+            Built by You, Powered by AI.
           </p>
         </div>
-
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-          <Link href="/patient" passHref>
-            <Card className="transform-gpu cursor-pointer transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
-              <CardHeader>
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <User className="h-6 w-6" />
-                </div>
-              </CardHeader>
-              <CardContent>
-                <CardTitle className="text-xl">Login as Patient</CardTitle>
-                <CardDescription className="mt-2">
-                  Access your health dashboard and vitals.
-                </CardDescription>
-              </CardContent>
-            </Card>
-          </Link>
-          <Link href="/doctor" passHref>
-            <Card className="transform-gpu cursor-pointer transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl">
-              <CardHeader>
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <Stethoscope className="h-6 w-6" />
-                </div>
-              </CardHeader>
-              <CardContent>
-                <CardTitle className="text-xl">Login as Doctor</CardTitle>
-                <CardDescription className="mt-2">
-                  View patient data and insights.
-                </CardDescription>
-              </CardContent>
-            </Card>
-          </Link>
-        </div>
-        <p className="px-8 text-center text-sm text-muted-foreground">
-          By logging in, you agree to our Terms of Service and Privacy Policy.
-        </p>
-      </div>
+      </footer>
     </div>
   );
 }
