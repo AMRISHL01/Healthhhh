@@ -40,9 +40,11 @@ const prompt = ai.definePrompt({
   name: 'generateCareRecommendationPrompt',
   input: {schema: GenerateCareRecommendationInputSchema},
   output: {schema: GenerateCareRecommendationOutputSchema},
-  prompt: `You are an AI assistant that helps doctors by providing care recommendations based on patient vitals.
+  prompt: `You are an AI assistant that provides actionable recommendations for doctors based on patient vitals. Your response should be a single, concise sentence.
 
-  Given the following patient vitals, generate a concise and actionable care recommendation for the doctor.
+  Given the following patient vitals, generate a clear and direct care recommendation.
+  - If vitals are critical (e.g., very high heart rate, low SpO2), suggest immediate action.
+  - If vitals are slightly off, suggest a follow-up or monitoring.
 
   Patient ID: {{{patientId}}}
   Heart Rate: {{{heartRate}}} BPM
