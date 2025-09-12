@@ -45,6 +45,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { patientUser, doctorUser, nurseUser, adminUser } from "@/lib/data";
+import LanguageSwitcher from "@/components/language-switcher";
+import { useTranslation } from "@/hooks/use-translation";
 
 export default function DashboardLayout({
   children,
@@ -53,6 +55,7 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleLogout = () => {
     router.push('/login');
@@ -81,42 +84,42 @@ export default function DashboardLayout({
   const getNavItems = () => {
     if (role === "doctor") {
       return [
-        { href: "/doctor", icon: Home, label: "Dashboard" },
-        { href: "/doctor/analytics", icon: BarChart, label: "Analytics" },
-        { href: "/doctor/tasks", icon: ClipboardList, label: "Tasks & Scheduling" },
-        { href: "#", icon: Settings, label: "Settings" },
+        { href: "/doctor", icon: Home, label: t("Dashboard") },
+        { href: "/doctor/analytics", icon: BarChart, label: t("Analytics") },
+        { href: "/doctor/tasks", icon: ClipboardList, label: t("Tasks & Scheduling") },
+        { href: "#", icon: Settings, label: t("Settings") },
       ];
     }
     if (role === "patient") {
        const items = [
-        { href: "/patient", icon: Home, label: "Dashboard" },
-        { href: "/patient/reports", icon: FileText, label: "Health Reports" },
-        { href: "/patient/chat", icon: MessageSquare, label: "Chat with Doctor" },
+        { href: "/patient", icon: Home, label: t("Dashboard") },
+        { href: "/patient/reports", icon: FileText, label: t("Health Reports") },
+        { href: "/patient/chat", icon: MessageSquare, label: t("Chat with Doctor") },
       ];
 
       if (patientUser.alertStatus === 'critical') {
-        items.push({ href: "/patient/emergency", icon: ShieldAlert, label: "Emergency" });
+        items.push({ href: "/patient/emergency", icon: ShieldAlert, label: t("Emergency") });
       }
 
       items.push(
-        { href: "#", icon: User, label: "Profile" },
-        { href: "#", icon: Settings, label: "Settings" }
+        { href: "#", icon: User, label: t("Profile") },
+        { href: "#", icon: Settings, label: t("Settings") }
       );
       return items;
     }
     if (role === "nurse") {
       return [
-        { href: "/nurse", icon: Home, label: "Dashboard" },
-        { href: "#", icon: User, label: "Profile" },
-        { href: "#", icon: Settings, label: "Settings" },
+        { href: "/nurse", icon: Home, label: t("Dashboard") },
+        { href: "#", icon: User, label: t("Profile") },
+        { href: "#", icon: Settings, label: t("Settings") },
       ];
     }
      if (role === "admin") {
       return [
-        { href: "/admin", icon: Home, label: "Dashboard" },
-        { href: "/admin/roles", icon: Users, label: "Role Management" },
-        { href: "/admin/logs", icon: FileCog, label: "System Logs" },
-        { href: "#", icon: Settings, label: "Settings" },
+        { href: "/admin", icon: Home, label: t("Dashboard") },
+        { href: "/admin/roles", icon: Users, label: t("Role Management") },
+        { href: "/admin/logs", icon: FileCog, label: t("System Logs") },
+        { href: "#", icon: Settings, label: t("Settings") },
       ];
     }
     return [];
@@ -125,11 +128,11 @@ export default function DashboardLayout({
   const navItems = getNavItems();
   
   const getDashboardTitle = () => {
-    if (role === "doctor") return "Doctor Dashboard";
-    if (role === "patient") return "Patient Dashboard";
-    if (role === "nurse") return "Nurse Dashboard";
-    if (role === "admin") return "Admin Dashboard";
-    return "Dashboard";
+    if (role === "doctor") return t("Doctor Dashboard");
+    if (role === "patient") return t("Patient Dashboard");
+    if (role === "nurse") return t("Nurse Dashboard");
+    if (role === "admin") return t("Admin Dashboard");
+    return t("Dashboard");
   }
 
   return (
@@ -174,7 +177,7 @@ export default function DashboardLayout({
                 <div className="flex-1 truncate">
                   <p className="font-semibold">{name}</p>
                   <p className="text-xs text-muted-foreground">
-                    {roleName}
+                    {t(roleName)}
                   </p>
                 </div>
               </button>
@@ -185,20 +188,20 @@ export default function DashboardLayout({
               sideOffset={16}
               className="w-56"
             >
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>{t('My Account')}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
                 <User className="mr-2 h-4 w-4" />
-                <span>Profile</span>
+                <span>{t('Profile')}</span>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Settings className="mr-2 h-4 w-4" />
-                <span>Settings</span>
+                <span>{t('Settings')}</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>
                 <LogOut className="mr-2 h-4 w-4" />
-                <span>Log out</span>
+                <span>{t('Log out')}</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -212,10 +215,13 @@ export default function DashboardLayout({
              {getDashboardTitle()}
             </h1>
           </div>
-          <Button variant="ghost" size="icon" className="rounded-full">
-            <Shield className="h-5 w-5" />
-            <span className="sr-only">Notifications</span>
-          </Button>
+          <div className="flex items-center gap-4">
+            <LanguageSwitcher />
+            <Button variant="ghost" size="icon" className="rounded-full">
+              <Shield className="h-5 w-5" />
+              <span className="sr-only">Notifications</span>
+            </Button>
+          </div>
         </header>
         <main className="flex-1 bg-background p-4 md:p-6 lg:p-8">
           {children}

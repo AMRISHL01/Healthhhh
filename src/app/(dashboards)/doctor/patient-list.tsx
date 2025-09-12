@@ -14,6 +14,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useTranslation } from "@/hooks/use-translation";
 
 type PatientListProps = {
   patients: Patient[];
@@ -32,11 +33,12 @@ export default function PatientList({
   selectedPatient,
   onSelectPatient,
 }: PatientListProps) {
+  const { t } = useTranslation();
   return (
     <Card className="h-full flex flex-col">
       <CardHeader>
-        <CardTitle>Patient Overview</CardTitle>
-        <CardDescription>Select a patient to view details.</CardDescription>
+        <CardTitle>{t('Patient Overview')}</CardTitle>
+        <CardDescription>{t('Select a patient to view details.')}</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 p-0">
         <ScrollArea className="h-full">
@@ -61,7 +63,7 @@ export default function PatientList({
                 <div className="flex-1">
                   <p className="font-semibold">{patient.name}</p>
                   <p className="text-sm text-muted-foreground">
-                    {patient.age}, {patient.gender}
+                    {patient.age}, {t(patient.gender)}
                   </p>
                 </div>
                 <Badge
@@ -71,7 +73,7 @@ export default function PatientList({
                     statusStyles[patient.alertStatus]
                   )}
                 >
-                  {patient.alertStatus}
+                  {t(patient.alertStatus)}
                 </Badge>
               </button>
             ))}

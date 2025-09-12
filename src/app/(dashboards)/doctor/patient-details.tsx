@@ -21,6 +21,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AiRecommendation, { AiRecommendationLoader } from "./ai-recommendation";
 import { Suspense } from "react";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/hooks/use-translation";
 
 type PatientDetailsProps = {
   patient: Patient | null;
@@ -28,14 +29,16 @@ type PatientDetailsProps = {
 
 
 export default function PatientDetails({ patient }: PatientDetailsProps) {
+  const { t } = useTranslation();
+
   if (!patient) {
     return (
       <Card className="flex h-full flex-col items-center justify-center">
         <CardContent className="text-center">
           <User className="mx-auto h-12 w-12 text-muted-foreground" />
-          <h3 className="mt-4 text-lg font-medium">Select a patient</h3>
+          <h3 className="mt-4 text-lg font-medium">{t('Select a patient')}</h3>
           <p className="mt-1 text-sm text-muted-foreground">
-            Choose a patient from the list to see their details.
+            {t('Choose a patient from the list to see their details.')}
           </p>
         </CardContent>
       </Card>
@@ -45,9 +48,9 @@ export default function PatientDetails({ patient }: PatientDetailsProps) {
   const latestVitals = patient.vitals[0];
 
   const vitalCards = [
-    { title: "Heart Rate", value: `${latestVitals.heartRate} bpm`, icon: HeartPulse },
+    { title: t("Heart Rate"), value: `${latestVitals.heartRate} bpm`, icon: HeartPulse },
     { title: "SpO₂", value: `${latestVitals.spo2}%`, icon: Droplet },
-    { title: "Temperature", value: `${latestVitals.temperature}°C`, icon: Thermometer },
+    { title: t("Temperature"), value: `${latestVitals.temperature}°C`, icon: Thermometer },
   ];
 
   return (
@@ -60,12 +63,12 @@ export default function PatientDetails({ patient }: PatientDetailsProps) {
           </Avatar>
           <div className="flex-1">
             <CardTitle className="text-2xl">{patient.name}</CardTitle>
-            <CardDescription>{patient.age} years old, {patient.gender}</CardDescription>
+            <CardDescription>{patient.age} {t('years old')}, {t(patient.gender)}</CardDescription>
           </div>
            {patient.alertStatus !== 'normal' && (
               <div className="flex items-center gap-2 text-destructive">
                 <AlertCircle className="h-6 w-6" />
-                <span className="font-semibold capitalize">{patient.alertStatus} Alert</span>
+                <span className="font-semibold capitalize">{t(patient.alertStatus)} {t('Alert')}</span>
               </div>
             )}
         </CardHeader>
@@ -84,8 +87,8 @@ export default function PatientDetails({ patient }: PatientDetailsProps) {
         </CardContent>
         {patient.alertStatus !== 'normal' && (
           <CardFooter className="flex justify-end gap-2">
-            <Button variant="outline">Mark as Checked</Button>
-            <Button>Escalate</Button>
+            <Button variant="outline">{t('Mark as Checked')}</Button>
+            <Button>{t('Escalate')}</Button>
           </CardFooter>
         )}
       </Card>
@@ -96,7 +99,7 @@ export default function PatientDetails({ patient }: PatientDetailsProps) {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Activity className="h-5 w-5" />
-                Vitals History (Last 24 hours)
+                {t('Vitals History (Last 24 hours)')}
               </CardTitle>
             </CardHeader>
             <CardContent>
