@@ -17,13 +17,13 @@ import {
 } from "lucide-react";
 import VitalsChart from "../patient/vitals-chart";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import AiRecommendation from "./ai-recommendation";
 
 type PatientDetailsProps = {
   patient: Patient | null;
+  children: React.ReactNode;
 };
 
-export default function PatientDetails({ patient }: PatientDetailsProps) {
+export default function PatientDetails({ patient, children }: PatientDetailsProps) {
   if (!patient) {
     return (
       <Card className="flex h-full flex-col items-center justify-center">
@@ -89,7 +89,7 @@ export default function PatientDetails({ patient }: PatientDetailsProps) {
           </Card>
         </div>
         <div className="lg:col-span-1">
-          <AiRecommendation patient={patient} />
+          {children}
         </div>
       </div>
     </div>

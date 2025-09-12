@@ -5,6 +5,7 @@ import type { Patient } from "@/lib/types";
 import { patients } from "@/lib/data";
 import PatientList from "./patient-list";
 import PatientDetails from "./patient-details";
+import AiRecommendation from "./ai-recommendation";
 
 export default function DoctorDashboard() {
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(patients[0]);
@@ -19,7 +20,9 @@ export default function DoctorDashboard() {
         />
       </div>
       <div className="md:col-span-2 lg:col-span-3">
-        <PatientDetails patient={selectedPatient} />
+        <PatientDetails patient={selectedPatient}>
+          <AiRecommendation patient={selectedPatient!} />
+        </PatientDetails>
       </div>
     </div>
   );
