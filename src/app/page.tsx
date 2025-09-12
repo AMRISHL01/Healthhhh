@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
 import Image from "next/image";
+import { ArrowRight } from "lucide-react";
 
 export default function LandingPage() {
   return (
@@ -11,14 +12,6 @@ export default function LandingPage() {
           <div className="flex items-center gap-2">
             <Logo className="h-8 w-8" />
             <span className="text-lg font-semibold">HealthFlow</span>
-          </div>
-          <div className="flex items-center space-x-4">
-            <Button variant="ghost" asChild>
-              <Link href="/login">Login</Link>
-            </Button>
-            <Button asChild>
-              <Link href="/signup">Sign Up</Link>
-            </Button>
           </div>
         </div>
       </header>
@@ -32,36 +25,59 @@ export default function LandingPage() {
               HealthFlow brings cutting-edge technology to healthcare, enabling
               continuous and connected patient monitoring for better outcomes.
             </p>
-            <div className="flex space-x-4">
-              <Button asChild size="lg">
-                <Link href="/signup">Get Started</Link>
-              </Button>
-              <Button asChild size="lg" variant="outline">
-                <Link href="#demo">Watch Demo</Link>
-              </Button>
+            <div className="mt-4 rounded-lg border bg-card p-6 shadow-sm">
+              <h3 className="mb-4 text-lg font-medium">
+                Enter the Dashboard as:
+              </h3>
+              <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                <Button asChild size="lg">
+                  <Link href="/patient">
+                    Patient <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+                </Button>
+                <Button asChild size="lg">
+                  <Link href="/doctor">
+                    Doctor <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+                </Button>
+                <Button asChild size="lg">
+                  <Link href="/nurse">
+                    Nurse <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+                </Button>
+                <Button asChild size="lg">
+                  <Link href="/admin">
+                    Admin <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+                </Button>
+              </div>
             </div>
           </div>
         </section>
-        <section id="demo" className="container space-y-6 bg-slate-50 py-8 dark:bg-transparent md:py-12 lg:py-24">
+        <section
+          id="demo"
+          className="container space-y-6 bg-slate-50 py-8 dark:bg-transparent md:py-12 lg:py-24"
+        >
           <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
             <h2 className="font-headline text-3xl font-bold leading-[1.1] sm:text-3xl md:text-5xl">
               See It In Action
             </h2>
             <p className="max-w-[85%] text-muted-foreground sm:text-lg">
-              Watch this short video to see how HealthFlow can revolutionize remote patient care.
+              Watch this short video to see how HealthFlow can revolutionize
+              remote patient care.
             </p>
           </div>
           <div className="mx-auto max-w-4xl rounded-lg border bg-card shadow-sm">
-             <div className="aspect-video w-full">
-                <Image 
-                  src="https://picsum.photos/seed/demovid/1280/720"
-                  alt="App Demo Video"
-                  width={1280}
-                  height={720}
-                  className="rounded-lg"
-                  data-ai-hint="app video"
-                />
-             </div>
+            <div className="aspect-video w-full">
+              <Image
+                src="https://picsum.photos/seed/demovid/1280/720"
+                alt="App Demo Video"
+                width={1280}
+                height={720}
+                className="rounded-lg"
+                data-ai-hint="app video"
+              />
+            </div>
           </div>
         </section>
       </main>
