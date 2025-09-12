@@ -1,6 +1,4 @@
 
-'use client';
-
 import type { Patient } from "@/lib/types";
 import {
   Card,
@@ -15,13 +13,11 @@ import {
   Thermometer,
   Activity,
   User,
-  WandSparkles,
 } from "lucide-react";
 import VitalsChart from "../patient/vitals-chart";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AiRecommendation, { AiRecommendationLoader } from "./ai-recommendation";
 import { Suspense } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 
 type PatientDetailsProps = {
   patient: Patient | null;
