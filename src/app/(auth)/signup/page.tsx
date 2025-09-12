@@ -11,29 +11,40 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import Logo from '@/components/logo';
 
-export default function LoginPage() {
+export default function SignupPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <div className="w-full max-w-md space-y-8">
         <div className="flex flex-col items-center space-y-4 text-center">
           <Logo className="h-16 w-16" />
           <h1 className="font-headline text-4xl font-bold tracking-tight text-foreground">
-            Welcome Back
+            Create an Account
           </h1>
           <p className="text-muted-foreground">
-            Enter your credentials to access your account.
+            Join HealthFlow to start monitoring your health remotely.
           </p>
         </div>
         <Card>
           <CardHeader>
-            <CardTitle>Login</CardTitle>
+            <CardTitle>Sign Up</CardTitle>
             <CardDescription>
-              Use your email and password to login.
+              Fill in the details below to create your account.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="full-name">Full Name</Label>
+              <Input id="full-name" placeholder="John Doe" required />
+            </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -44,40 +55,31 @@ export default function LoginPage() {
               />
             </div>
             <div className="space-y-2">
-              <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
-                <Link
-                  href="/forgot-password"
-                  className="ml-auto inline-block text-sm underline"
-                >
-                  Forgot your password?
-                </Link>
-              </div>
+              <Label htmlFor="password">Password</Label>
               <Input id="password" type="password" required />
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="role">I am a...</Label>
+              <Select>
+                <SelectTrigger id="role">
+                  <SelectValue placeholder="Select your role" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="patient">Patient</SelectItem>
+                  <SelectItem value="doctor">Doctor</SelectItem>
+                  <SelectItem value="nurse">Nurse</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
             <Button type="submit" className="w-full">
-              Login
+              Create Account
             </Button>
-            <div className="relative my-4">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card px-2 text-muted-foreground">
-                  Or continue with
-                </span>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <Button variant="outline">Google</Button>
-              <Button variant="outline">Phone</Button>
-            </div>
           </CardContent>
         </Card>
         <div className="mt-4 text-center text-sm">
-          Don&apos;t have an account?{' '}
-          <Link href="/signup" className="underline">
-            Sign up
+          Already have an account?{' '}
+          <Link href="/login" className="underline">
+            Login
           </Link>
         </div>
       </div>
