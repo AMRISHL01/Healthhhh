@@ -38,34 +38,8 @@ export default function LandingPage() {
                 <Link href="/signup">Get Started</Link>
               </Button>
               <Button variant="outline" size="lg" asChild>
-                <Link href="#demo">See Demo</Link>
+                <Link href="/login">See Demo</Link>
               </Button>
-            </div>
-          </div>
-        </section>
-        <section
-          id="demo"
-          className="container space-y-6 bg-slate-50 py-8 dark:bg-transparent md:py-12 lg:py-24"
-        >
-          <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
-            <h2 className="font-headline text-3xl font-bold leading-[1.1] sm:text-3xl md:text-5xl">
-              See It In Action
-            </h2>
-            <p className="max-w-[85%] text-muted-foreground sm:text-lg">
-              Watch this short video to see how HealthFlow can revolutionize
-              remote patient care.
-            </p>
-          </div>
-          <div className="mx-auto max-w-4xl rounded-lg border bg-card shadow-sm">
-            <div className="aspect-video w-full">
-              <Image
-                src="https://picsum.photos/seed/demovid/1280/720"
-                alt="App Demo Video"
-                width={1280}
-                height={720}
-                className="rounded-lg"
-                data-ai-hint="app video"
-              />
             </div>
           </div>
         </section>
