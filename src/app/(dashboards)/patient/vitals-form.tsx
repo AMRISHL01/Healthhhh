@@ -26,6 +26,7 @@ const formSchema = z.object({
   heartRate: z.coerce.number().min(30, "Invalid heart rate").max(220, "Invalid heart rate"),
   spo2: z.coerce.number().min(70, "Invalid SpO2 level").max(100, "Invalid SpO2 level"),
   temperature: z.coerce.number().min(35, "Invalid temperature").max(43, "Invalid temperature"),
+  bloodPressure: z.string().regex(/^\d{2,3}\/\d{2,3}$/, "Invalid format (e.g., 120/80)"),
 });
 
 export default function VitalsForm() {
@@ -36,6 +37,7 @@ export default function VitalsForm() {
       heartRate: undefined,
       spo2: undefined,
       temperature: undefined,
+      bloodPressure: "",
     },
   });
 
@@ -81,6 +83,19 @@ export default function VitalsForm() {
                   <FormLabel>SpO₂ (%)</FormLabel>
                   <FormControl>
                     <Input type="number" placeholder="e.g., 98" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+             <FormField
+              control={form.control}
+              name="bloodPressure"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Blood Pressure (e.g. 120/80)</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g., 120/80" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

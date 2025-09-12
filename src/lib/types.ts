@@ -3,6 +3,7 @@ export type Vital = {
   heartRate: number;
   spo2: number;
   temperature: number;
+  bloodPressure: string;
 };
 
 export type Patient = {
