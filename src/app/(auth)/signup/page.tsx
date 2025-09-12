@@ -32,6 +32,9 @@ import {
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import Logo from '@/components/logo';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
+import { createUserDocument } from '@/services/firestore';
 
 const formSchema = z
   .object({
@@ -64,16 +67,39 @@ export default function SignupPage() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log('Signup submitted with:', values);
-    toast({
-      title: 'Signup Successful!',
-      description: 'You have successfully created an account. Redirecting to login...',
-    });
-    // Redirect to login after a short delay
-    setTimeout(() => {
-      router.push('/login');
-    }, 2000);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        values.email,
+        values.password
+      );
+      
+      const user = userCredential.user;
+      
+      await createUserDocument(user.uid, {
+        name: `${values.firstName} ${values.lastName}`,
+        email: values.email,
+        role: values.role,
+      });
+
+      toast({
+        title: 'Signup Successful!',
+        description: 'You have successfully created an account. Redirecting to login...',
+      });
+      
+      setTimeout(() => {
+        router.push('/login');
+      }, 2000);
+
+    } catch (error: any) {
+      console.error('Signup error:', error);
+      toast({
+        title: 'Signup Failed',
+        description: error.message,
+        variant: 'destructive',
+      });
+    }
   }
 
   return (

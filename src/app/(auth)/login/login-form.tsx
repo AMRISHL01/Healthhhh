@@ -18,6 +18,10 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from '@/lib/firebase';
+import { doc, getDoc } from 'firebase/firestore';
+
 
 const formSchema = z.object({
   email: z.string().email({
@@ -40,31 +44,48 @@ export function LoginForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Simulate authentication
-    console.log('Login submitted with:', values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
+      const user = userCredential.user;
 
-    if (values.email.includes('doctor')) {
-      router.push('/doctor');
-    } else if (values.email.includes('patient')) {
-      router.push('/patient');
-    } else if (values.email.includes('nurse')) {
-      router.push('/nurse');
-    } else if (values.email.includes('admin')) {
-      router.push('/admin');
-    } else {
-       toast({
+      const userDocRef = doc(db, 'users', user.uid);
+      const userDoc = await getDoc(userDocRef);
+      
+      let role = 'patient'; // default role
+      if (userDoc.exists()) {
+        role = userDoc.data()?.role || 'patient';
+      }
+
+      toast({
+        title: 'Login Successful',
+        description: 'Redirecting to your dashboard...',
+      });
+
+      switch (role) {
+        case 'doctor':
+          router.push('/doctor');
+          break;
+        case 'patient':
+          router.push('/patient');
+          break;
+        case 'nurse':
+          router.push('/nurse');
+          break;
+        case 'admin':
+          router.push('/admin');
+          break;
+        default:
+          router.push('/patient');
+      }
+    } catch (error: any) {
+      console.error('Login error:', error);
+      toast({
         title: 'Login Failed',
-        description: 'No role found for this email. Use an email containing "doctor", "patient", "nurse", or "admin".',
+        description: error.message,
         variant: 'destructive',
       });
-      return;
     }
-    
-    toast({
-      title: 'Login Successful',
-      description: 'Redirecting to your dashboard...',
-    });
   }
 
   return (
