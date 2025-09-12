@@ -4,6 +4,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -13,11 +14,13 @@ import {
   Thermometer,
   Activity,
   User,
+  AlertCircle,
 } from "lucide-react";
 import VitalsChart from "../patient/vitals-chart";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AiRecommendation, { AiRecommendationLoader } from "./ai-recommendation";
 import { Suspense } from "react";
+import { Button } from "@/components/ui/button";
 
 type PatientDetailsProps = {
   patient: Patient | null;
@@ -50,15 +53,21 @@ export default function PatientDetails({ patient }: PatientDetailsProps) {
   return (
     <div className="space-y-6">
       <Card>
-        <CardHeader className="flex flex-row items-center gap-4 space-y-0">
+        <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-4">
           <Avatar className="h-16 w-16">
             <AvatarImage src={`https://picsum.photos/seed/${patient.avatar}/100/100`} alt={patient.name} />
             <AvatarFallback>{patient.name.charAt(0)}</AvatarFallback>
           </Avatar>
-          <div>
+          <div className="flex-1">
             <CardTitle className="text-2xl">{patient.name}</CardTitle>
             <CardDescription>{patient.age} years old, {patient.gender}</CardDescription>
           </div>
+           {patient.alertStatus !== 'normal' && (
+              <div className="flex items-center gap-2 text-destructive">
+                <AlertCircle className="h-6 w-6" />
+                <span className="font-semibold capitalize">{patient.alertStatus} Alert</span>
+              </div>
+            )}
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -73,6 +82,12 @@ export default function PatientDetails({ patient }: PatientDetailsProps) {
             ))}
           </div>
         </CardContent>
+        {patient.alertStatus !== 'normal' && (
+          <CardFooter className="flex justify-end gap-2">
+            <Button variant="outline">Mark as Checked</Button>
+            <Button>Escalate</Button>
+          </CardFooter>
+        )}
       </Card>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -81,7 +96,7 @@ export default function PatientDetails({ patient }: PatientDetailsProps) {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Activity className="h-5 w-5" />
-                Vitals History
+                Vitals History (Last 24 hours)
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -91,7 +106,6 @@ export default function PatientDetails({ patient }: PatientDetailsProps) {
         </div>
         <div className="lg:col-span-1">
           <Suspense fallback={<AiRecommendationLoader />}>
-            {/* @ts-expect-error Async Server Component */}
             <AiRecommendation patient={patient} />
           </Suspense>
         </div>

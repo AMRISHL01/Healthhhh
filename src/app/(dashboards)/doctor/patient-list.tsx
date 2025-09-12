@@ -13,6 +13,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 type PatientListProps = {
   patients: Patient[];
@@ -32,48 +33,50 @@ export default function PatientList({
   onSelectPatient,
 }: PatientListProps) {
   return (
-    <Card className="h-full">
+    <Card className="h-full flex flex-col">
       <CardHeader>
         <CardTitle>Patient Overview</CardTitle>
         <CardDescription>Select a patient to view details.</CardDescription>
       </CardHeader>
-      <CardContent className="h-[calc(100%-8rem)] overflow-y-auto p-0">
-        <div className="flex flex-col">
-          {patients.map((patient) => (
-            <button
-              key={patient.id}
-              onClick={() => onSelectPatient(patient)}
-              className={cn(
-                "flex items-center gap-4 p-4 text-left transition-colors hover:bg-muted/50",
-                selectedPatient?.id === patient.id && "bg-muted"
-              )}
-            >
-              <Avatar className="h-10 w-10">
-                <AvatarImage
-                  src={`https://picsum.photos/seed/${patient.avatar}/100/100`}
-                  alt={patient.name}
-                  data-ai-hint="person portrait"
-                />
-                <AvatarFallback>{patient.name.charAt(0)}</AvatarFallback>
-              </Avatar>
-              <div className="flex-1">
-                <p className="font-semibold">{patient.name}</p>
-                <p className="text-sm text-muted-foreground">
-                  {patient.age}, {patient.gender}
-                </p>
-              </div>
-              <Badge
-                variant="outline"
+      <CardContent className="flex-1 p-0">
+        <ScrollArea className="h-full">
+          <div className="flex flex-col">
+            {patients.map((patient) => (
+              <button
+                key={patient.id}
+                onClick={() => onSelectPatient(patient)}
                 className={cn(
-                  "capitalize",
-                  statusStyles[patient.alertStatus]
+                  "flex items-center gap-4 p-4 text-left transition-colors hover:bg-muted/50 w-full",
+                  selectedPatient?.id === patient.id && "bg-muted"
                 )}
               >
-                {patient.alertStatus}
-              </Badge>
-            </button>
-          ))}
-        </div>
+                <Avatar className="h-10 w-10">
+                  <AvatarImage
+                    src={`https://picsum.photos/seed/${patient.avatar}/100/100`}
+                    alt={patient.name}
+                    data-ai-hint="person portrait"
+                  />
+                  <AvatarFallback>{patient.name.charAt(0)}</AvatarFallback>
+                </Avatar>
+                <div className="flex-1">
+                  <p className="font-semibold">{patient.name}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {patient.age}, {patient.gender}
+                  </p>
+                </div>
+                <Badge
+                  variant="outline"
+                  className={cn(
+                    "capitalize",
+                    statusStyles[patient.alertStatus]
+                  )}
+                >
+                  {patient.alertStatus}
+                </Badge>
+              </button>
+            ))}
+          </div>
+        </ScrollArea>
       </CardContent>
     </Card>
   );

@@ -6,6 +6,7 @@ import type { Patient } from "@/lib/types";
 import PatientList from "./patient-list";
 import PatientDetails from "./patient-details";
 import DoctorTasks from "./doctor-tasks";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 type DoctorDashboardClientProps = {
     patients: Patient[];
@@ -13,24 +14,24 @@ type DoctorDashboardClientProps = {
 }
 
 export default function DoctorDashboardClient({ patients, tasks }: DoctorDashboardClientProps) {
-    const [selectedPatient, setSelectedPatient] = useState<Patient | null>(patients[0] || null);
+    const [selectedPatient, setSelectedPatient] = useState<Patient | null>(patients.find(p => p.alertStatus === 'critical') || patients[0] || null);
 
     return (
-         <div className="grid h-full grid-cols-1 gap-6 md:grid-cols-3">
-            <div className="md:col-span-1">
-            <PatientList
-                patients={patients}
-                selectedPatient={selectedPatient}
-                onSelectPatient={setSelectedPatient}
-            />
+        <div className="grid h-full grid-cols-1 gap-6 lg:grid-cols-3">
+            <div className="lg:col-span-1">
+                <PatientList
+                    patients={patients}
+                    selectedPatient={selectedPatient}
+                    onSelectPatient={setSelectedPatient}
+                />
             </div>
-            <div className="md:col-span-2">
-            {selectedPatient ? (
-                <PatientDetails patient={selectedPatient} />
-            ) : (
-                <DoctorTasks tasks={tasks} />
-            )}
+            <div className="lg:col-span-2">
+                {selectedPatient ? (
+                    <PatientDetails patient={selectedPatient} />
+                ) : (
+                    <DoctorTasks tasks={tasks} />
+                )}
             </div>
-      </div>
+        </div>
     )
 }
