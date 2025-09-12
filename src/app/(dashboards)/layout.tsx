@@ -14,6 +14,7 @@ import {
   BarChart,
   FileText,
   MessageSquare,
+  ClipboardList,
 } from "lucide-react";
 
 import {
@@ -54,6 +55,7 @@ export default function DashboardLayout({
     ? [
         { href: "/doctor", icon: Home, label: "Dashboard" },
         { href: "/doctor/analytics", icon: BarChart, label: "Analytics" },
+        { href: "/doctor/tasks", icon: ClipboardList, label: "Tasks & Scheduling" },
         { href: "#", icon: Settings, label: "Settings" },
       ]
     : [
