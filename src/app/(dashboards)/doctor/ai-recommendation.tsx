@@ -1,5 +1,4 @@
 
-import type { Patient } from "@/lib/types";
 import {
     Card,
     CardContent,
@@ -7,22 +6,9 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { WandSparkles } from "lucide-react";
-import { generateCareRecommendation } from "@/ai/flows/ai-generated-recommendations-for-doctors";
 import { Skeleton } from "@/components/ui/skeleton";
 
-
-export default async function AiRecommendation({ patient }: { patient: Patient }) {
-    if (!patient) return null;
-    const latestVitals = patient.vitals[0];
-    if (!latestVitals) return null;
-
-    const { recommendation } = await generateCareRecommendation({
-        patientId: patient.id,
-        heartRate: latestVitals.heartRate,
-        spo2: latestVitals.spo2,
-        temperature: latestVitals.temperature,
-    });
-
+export default function AiRecommendation({ recommendation }: { recommendation: string | null }) {
     return (
         <Card>
             <CardHeader>

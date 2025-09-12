@@ -1,40 +1,43 @@
 
-"use client";
-
-import { useState, Suspense } from "react";
 import type { Patient } from "@/lib/types";
-import { patients, doctorTasks } from "@/lib/data";
-import PatientList from "./patient-list";
-import PatientDetails from "./patient-details";
-import AiRecommendation from "./ai-recommendation";
+import { patients, doctorTasks, doctorUser } from "@/lib/data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, AlertTriangle, ClipboardList } from "lucide-react";
-import DoctorTasks from "./doctor-tasks";
-import { Skeleton } from "@/components/ui/skeleton";
+import DoctorDashboardClient from "./doctor-dashboard-client";
+import { generateCareRecommendation } from "@/ai/flows/ai-generated-recommendations-for-doctors";
 
-function AiRecommendationLoader() {
-    return (
-        <Card>
-            <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                     <Skeleton className="h-5 w-5" />
-                     <Skeleton className="h-5 w-40" />
-                </CardTitle>
-            </CardHeader>
-            <CardContent>
-                <div className="space-y-2">
-                    <Skeleton className="h-4 w-full" />
-                    <Skeleton className="h-4 w-4/5" />
-                </div>
-            </CardContent>
-        </Card>
-    )
+type PatientWithRecommendation = Patient & {
+  aiRecommendation: string;
+};
+
+async function getRecommendationsForPatients(patients: Patient[]): Promise<PatientWithRecommendation[]> {
+    const recommendations = await Promise.all(
+        patients.map(async (patient) => {
+            if (!patient.vitals || patient.vitals.length === 0) {
+                return { ...patient, aiRecommendation: "No vitals data available for recommendation." };
+            }
+            const latestVitals = patient.vitals[0];
+            try {
+                const { recommendation } = await generateCareRecommendation({
+                    patientId: patient.id,
+                    heartRate: latestVitals.heartRate,
+                    spo2: latestVitals.spo2,
+                    temperature: latestVitals.temperature,
+                });
+                return { ...patient, aiRecommendation: recommendation };
+            } catch (error) {
+                console.error(`Failed to get AI recommendation for patient ${patient.id}:`, error);
+                return { ...patient, aiRecommendation: "Could not generate AI recommendation at this time." };
+            }
+        })
+    );
+    return recommendations;
 }
 
 
-export default function DoctorDashboard() {
-  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(patients[0]);
+export default async function DoctorDashboardPage() {
   const criticalAlerts = patients.filter(p => p.alertStatus === 'critical').length;
+  const patientsWithRecommendations = await getRecommendationsForPatients(patients);
 
   return (
     <div className="space-y-6">
@@ -71,27 +74,11 @@ export default function DoctorDashboard() {
         </Card>
       </div>
 
-      <div className="grid h-full grid-cols-1 gap-6 md:grid-cols-3">
-        <div className="md:col-span-1">
-          <PatientList
-            patients={patients}
-            selectedPatient={selectedPatient}
-            onSelectPatient={setSelectedPatient}
-          />
-        </div>
-        <div className="md:col-span-2">
-          {selectedPatient ? (
-            <PatientDetails patient={selectedPatient}>
-                <Suspense fallback={<AiRecommendationLoader />}>
-                    {/* @ts-expect-error Async Server Component */}
-                    <AiRecommendation patient={selectedPatient} />
-                </Suspense>
-            </PatientDetails>
-          ) : (
-             <DoctorTasks tasks={doctorTasks} />
-          )}
-        </div>
-      </div>
+     <DoctorDashboardClient 
+        patients={patientsWithRecommendations}
+        tasks={doctorTasks}
+     />
     </div>
   );
 }
+
