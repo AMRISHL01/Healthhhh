@@ -61,7 +61,7 @@ export default function DoctorDashboard() {
         <div className="md:col-span-2">
           {selectedPatient ? (
             <PatientDetails patient={selectedPatient}>
-                {/* @ts-expect-error Server Component */}
+                {/* @ts-expect-error Async Server Component */}
                 <AiRecommendation patient={selectedPatient} />
             </PatientDetails>
           ) : (
