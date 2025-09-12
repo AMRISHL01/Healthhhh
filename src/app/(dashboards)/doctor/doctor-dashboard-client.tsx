@@ -6,6 +6,10 @@ import type { Patient } from "@/lib/types";
 import PatientList from "./patient-list";
 import PatientDetails from "./patient-details";
 import DoctorTasks from "./doctor-tasks";
+import { Suspense } from "react";
+import { AiRecommendationLoader } from "./ai-recommendation";
+import AiRecommendation from "./ai-recommendation";
+
 
 type DoctorDashboardClientProps = {
     patients: Patient[];

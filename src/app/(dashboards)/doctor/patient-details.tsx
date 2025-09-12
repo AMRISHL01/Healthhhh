@@ -15,10 +15,11 @@ import {
   Thermometer,
   Activity,
   User,
+  WandSparkles,
 } from "lucide-react";
 import VitalsChart from "../patient/vitals-chart";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import AiRecommendation from "./ai-recommendation";
+import AiRecommendation, { AiRecommendationLoader } from "./ai-recommendation";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -26,24 +27,6 @@ type PatientDetailsProps = {
   patient: Patient | null;
 };
 
-function AiRecommendationLoader() {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <WandSparkles className="h-5 w-5 text-primary" />
-          AI Care Recommendation
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-2">
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-4/5" />
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
 
 export default function PatientDetails({ patient }: PatientDetailsProps) {
   if (!patient) {
