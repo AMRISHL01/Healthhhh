@@ -14,3 +14,13 @@ export type Patient = {
   vitals: Vital[];
   alertStatus: 'normal' | 'warning' | 'critical';
 };
+
+export type NurseTask = {
+  id: string;
+  patientId: string;
+  patientName: string;
+  task: string;
+  time: string;
+  status: 'pending' | 'completed';
+  notes?: string;
+};

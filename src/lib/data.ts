@@ -1,4 +1,4 @@
-import type { Patient } from '@/lib/types';
+import type { Patient, NurseTask } from '@/lib/types';
 
 export const patients: Patient[] = [
   {
@@ -65,3 +65,32 @@ export const patients: Patient[] = [
 
 export const patientUser = patients[2]; // Use Peter Jones as the default patient user
 export const doctorUser = { name: 'Dr. Evelyn Reed', avatar: '5' };
+export const nurseUser = { name: 'Chris Garcia', avatar: '6' };
+
+export const nurseTasks: NurseTask[] = [
+  {
+    id: 't001',
+    patientId: 'p001',
+    patientName: 'John Doe',
+    task: 'Check vitals and administer medication.',
+    time: '2024-07-21T09:00:00Z',
+    status: 'pending',
+  },
+  {
+    id: 't002',
+    patientId: 'p002',
+    patientName: 'Jane Smith',
+    task: 'Follow-up on yesterday\'s high heart rate alert.',
+    time: '2024-07-21T11:00:00Z',
+    status: 'pending',
+  },
+    {
+    id: 't003',
+    patientId: 'p004',
+    patientName: 'Mary Johnson',
+    task: 'Routine check-up.',
+    time: '2024-07-21T14:00:00Z',
+    status: 'completed',
+    notes: 'Patient is feeling well. Vitals are stable.'
+  },
+];

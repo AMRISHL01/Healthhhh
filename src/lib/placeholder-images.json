@@ -29,6 +29,12 @@
       "description": "Avatar for Dr. Evelyn Reed",
       "imageUrl": "https://picsum.photos/seed/5/100/100",
       "imageHint": "doctor portrait"
+    },
+    {
+      "id": "6",
+      "description": "Avatar for Chris Garcia",
+      "imageUrl": "https://picsum.photos/seed/6/100/100",
+      "imageHint": "person smiling"
     }
   ]
 }

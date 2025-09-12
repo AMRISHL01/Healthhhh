@@ -40,7 +40,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
-import { doctorUser, patientUser } from "@/lib/data";
+import { doctorUser, patientUser, nurseUser } from "@/lib/data";
 
 export default function DashboardLayout({
   children,
@@ -49,22 +49,54 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname();
   const isDoctor = pathname.startsWith("/doctor");
-  const user = isDoctor ? doctorUser : patientUser;
+  const isPatient = pathname.startsWith("/patient");
+  const isNurse = pathname.startsWith("/nurse");
 
-  const navItems = isDoctor
-    ? [
+  const getUser = () => {
+    if (isDoctor) return { user: doctorUser, role: "Doctor" };
+    if (isPatient) return { user: patientUser, role: "Patient" };
+    if (isNurse) return { user: nurseUser, role: "Nurse" };
+    return { user: patientUser, role: "Patient" }; // Default
+  };
+
+  const { user, role } = getUser();
+
+  const getNavItems = () => {
+    if (isDoctor) {
+      return [
         { href: "/doctor", icon: Home, label: "Dashboard" },
         { href: "/doctor/analytics", icon: BarChart, label: "Analytics" },
         { href: "/doctor/tasks", icon: ClipboardList, label: "Tasks & Scheduling" },
         { href: "#", icon: Settings, label: "Settings" },
-      ]
-    : [
+      ];
+    }
+    if (isPatient) {
+      return [
         { href: "/patient", icon: Home, label: "Dashboard" },
         { href: "/patient/reports", icon: FileText, label: "Health Reports" },
         { href: "/patient/chat", icon: MessageSquare, label: "Chat with Doctor" },
         { href: "#", icon: User, label: "Profile" },
         { href: "#", icon: Settings, label: "Settings" },
       ];
+    }
+    if (isNurse) {
+      return [
+        { href: "/nurse", icon: Home, label: "Dashboard" },
+        { href: "#", icon: User, label: "Profile" },
+        { href: "#", icon: Settings, label: "Settings" },
+      ];
+    }
+    return [];
+  };
+
+  const navItems = getNavItems();
+  
+  const getDashboardTitle = () => {
+    if (isDoctor) return "Doctor Dashboard";
+    if (isPatient) return "Patient Dashboard";
+    if (isNurse) return "Nurse Dashboard";
+    return "Dashboard";
+  }
 
   return (
     <SidebarProvider>
@@ -107,7 +139,7 @@ export default function DashboardLayout({
                 <div className="flex-1 truncate">
                   <p className="font-semibold">{user.name}</p>
                   <p className="text-xs text-muted-foreground">
-                    {isDoctor ? "Doctor" : "Patient"}
+                    {role}
                   </p>
                 </div>
               </button>
@@ -144,7 +176,7 @@ export default function DashboardLayout({
           <SidebarTrigger className="md:hidden" />
           <div className="flex-1">
             <h1 className="font-headline text-lg font-semibold md:text-xl">
-              {isDoctor ? "Doctor Dashboard" : "Patient Dashboard"}
+             {getDashboardTitle()}
             </h1>
           </div>
           <Button variant="ghost" size="icon" className="rounded-full">
